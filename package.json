@@ -2,7 +2,6 @@
   "name": "reactwarriors-movie-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": " ",
   "dependencies": {
     "bootstrap": "^4.1.3",
     "react": "^16.5.0",
