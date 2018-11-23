@@ -1,7 +1,7 @@
 import React from "react";
 import { API_URL, API_KEY_3 } from "../../api/api";
 
-export default class Genres extends React.Component {
+export default class Genres extends React.PureComponent {
   constructor() {
     super();
     this.state = {
@@ -36,6 +36,7 @@ export default class Genres extends React.Component {
   render() {
     const { genresList } = this.state;
     const { with_genres } = this.props;
+    console.log("genres");
     return (
       <React.Fragment>
         {genresList.map(genre => (

@@ -1,7 +1,8 @@
 import React from "react";
 
-export default class Pagination extends React.Component {
+export default class Pagination extends React.PureComponent {
   render() {
+    console.log("pagination");
     return (
       <React.Fragment>
         <div className="btn-group d-flex justify-content-center">
