@@ -29,9 +29,10 @@ export default class App extends React.Component {
     };
   }
 
-  updateUser = user => {
+  updateUser = (user, session_id = null) => {
     this.setState({
-      user
+      user,
+      session_id
     });
   };
 
