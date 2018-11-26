@@ -29,18 +29,20 @@ export default class App extends React.Component {
     };
   }
 
-  updateUser = (user, session_id = null) => {
+  updateUser = user => {
     this.setState({
-      user,
-      session_id
+      user
     });
   };
 
   updateSessionId = session_id => {
-    cookies.set("session_id", session_id, {
-      path: "/",
-      maxAge: 2592000
-    });
+    if (!cookies.get("session_id")) {
+      cookies.set("session_id", session_id, {
+        path: "/",
+        maxAge: 2592000
+      });
+    }
+
     this.setState({
       session_id
     });
@@ -83,17 +85,19 @@ export default class App extends React.Component {
   componentDidMount() {
     const session_id = cookies.get("session_id");
     console.log("LOL", session_id);
+
     if (session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
       ).then(user => {
-        this.updateUser(user, session_id);
+        this.updateUser(user);
+        this.updateSessionId(session_id);
       });
     }
   }
 
   componentDidUpdate() {
-    console.log("LOL", this.state.session_id);
+    // console.log("LOL", this.state.session_id);
   }
 
   render() {
