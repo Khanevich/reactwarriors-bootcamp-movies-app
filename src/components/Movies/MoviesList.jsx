@@ -52,12 +52,13 @@ export default class MovieList extends Component {
   }
   render() {
     const { movies } = this.state;
+    const { user, session_id } = this.props;
     return (
       <div className="row">
         {movies.map(movie => {
           return (
             <div key={movie.id} className="col-6 mb-4">
-              <MovieItem item={movie} />
+              <MovieItem user={user} session_id={session_id} item={movie} />
             </div>
           );
         })}

@@ -187,6 +187,7 @@ export default class LoginForm extends React.Component {
         this.setState({
           submitting: false
         });
+        console.log(user);
       })
       .catch(error => {
         console.log("error", error);

@@ -6,7 +6,10 @@ import Cookies from "universal-cookie";
 import { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStroopwafel } from "@fortawesome/free-solid-svg-icons";
+import { fas } from "@fortawesome/free-solid-svg-icons";
+import { far } from "@fortawesome/free-regular-svg-icons";
+
+library.add(fas, far);
 
 const cookies = new Cookies();
 
@@ -78,20 +81,19 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
+    console.log("LOL", session_id);
     if (session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
       ).then(user => {
-        this.updateUser(user);
+        this.updateUser(user, session_id);
       });
     }
   }
 
-  refresh = () => {
-    this.setState(({ filters }) => ({
-      filters: { ...filters }
-    }));
-  };
+  // componentDidUpdate() {
+  //   console.log("LOL", this.state.session_id);
+  // }
 
   render() {
     const { filters, page, total_pages, user } = this.state;
@@ -123,15 +125,13 @@ export default class App extends React.Component {
             </div>
             <div className="col-8">
               <MoviesList
+                user={user}
                 filters={filters}
                 page={page}
                 onChangePage={this.onChangePage}
                 getTotalPages={this.getTotalPages}
                 onChangeFilters={this.onChangeFilters}
               />
-              <button className="btn btn-danger" onClick={this.refresh}>
-                Force refresh
-              </button>
             </div>
           </div>
         </div>
