@@ -92,12 +92,12 @@ export default class App extends React.Component {
     }
   }
 
-  // componentDidUpdate() {
-  //   console.log("LOL", this.state.session_id);
-  // }
+  componentDidUpdate() {
+    console.log("LOL", this.state.session_id);
+  }
 
   render() {
-    const { filters, page, total_pages, user } = this.state;
+    const { filters, page, total_pages, user, session_id } = this.state;
     return (
       <div>
         <Header
@@ -126,6 +126,7 @@ export default class App extends React.Component {
             </div>
             <div className="col-8">
               <MoviesList
+                session_id={session_id}
                 user={user}
                 filters={filters}
                 page={page}
