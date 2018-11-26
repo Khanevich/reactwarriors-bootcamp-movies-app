@@ -30,12 +30,23 @@ export default class MovieList extends Component {
     this.getMovies(this.props.filters, this.props.page);
   }
 
-  componentDidUpdate(prevProps) {
-    if (this.props.filters !== prevProps.filters) {
+  componentDidUpdate({ filters: prevFilters, page: prevPage }) {
+    const { filters, page } = this.props;
+    const filtersEq =
+      filters === prevFilters ||
+      Object.keys(filters)
+        .map(
+          name =>
+            Array.isArray(filters[name])
+              ? filters[name].join(",") === prevFilters[name].join(",")
+              : filters[name] === prevFilters[name]
+        )
+        .reduce((res, cur) => res && cur, true);
+    if (!filtersEq) {
       this.props.onChangePage(1);
       this.getMovies(this.props.filters, 1);
     }
-    if (this.props.page !== prevProps.page) {
+    if (page !== prevPage) {
       this.getMovies(this.props.filters, this.props.page);
     }
   }

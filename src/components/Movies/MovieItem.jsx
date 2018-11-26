@@ -1,4 +1,7 @@
 import React from "react";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faStroopwafel } from "@fortawesome/free-solid-svg-icons";
 
 export default class MovieItem extends React.Component {
   render() {
@@ -14,6 +17,7 @@ export default class MovieItem extends React.Component {
         <div className="card-body">
           <h6 className="card-title">{item.title}</h6>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
+          <FontAwesomeIcon icon="coffee" />
         </div>
       </div>
     );
