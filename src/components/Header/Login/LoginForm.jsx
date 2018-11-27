@@ -1,5 +1,5 @@
 import React from "react";
-import { API_URL, API_KEY_3, fetchApi } from "../../api/api";
+import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
 import Field from "./Field/Field";
 
 export default class LoginForm extends React.Component {
@@ -20,7 +20,6 @@ export default class LoginForm extends React.Component {
   }
 
   onChangeInfo = event => {
-    // console.log(this.state);
     const name = event.target.name;
     const value = event.target.value;
     this.setState(prevState => ({
@@ -60,11 +59,6 @@ export default class LoginForm extends React.Component {
       errors.repeatPassword = "Passwords must be the same";
     }
     return errors;
-  };
-  toggleModal = () => {
-    this.setState(prevState => ({
-      showModal: !prevState.showModal
-    }));
   };
 
   // onSubmit = async () => {
@@ -126,6 +120,14 @@ export default class LoginForm extends React.Component {
   //         })
   //       }
   //     );
+  //     this.props.updateSessionId(session_id);
+  //     const user = await fetchApi(
+  //       `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
+  //     );
+  //     this.props.updateUser(user);
+  //     this.setState({
+  //       submitting: false
+  //     });
   //   } catch (error) {
   //     this.setState({
   //       submitting: false,

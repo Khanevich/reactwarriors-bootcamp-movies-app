@@ -1,11 +1,10 @@
 import React from "react";
 import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
-import Header from "../Header/Header";
+import Header from "./Header/Header";
 import Cookies from "universal-cookie";
 import { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 
@@ -25,9 +24,17 @@ export default class App extends React.Component {
         with_genres: []
       },
       page: 1,
-      total_pages: ""
+      total_pages: "",
+      showModal: false
     };
   }
+
+  toggleModal = () => {
+    console.log("toggle");
+    this.setState(prevState => ({
+      showModal: !prevState.showModal
+    }));
+  };
 
   updateUser = user => {
     this.setState({
@@ -36,12 +43,10 @@ export default class App extends React.Component {
   };
 
   updateSessionId = session_id => {
-    if (!cookies.get("session_id")) {
-      cookies.set("session_id", session_id, {
-        path: "/",
-        maxAge: 2592000
-      });
-    }
+    cookies.set("session_id", session_id, {
+      path: "/",
+      maxAge: 2592000
+    });
 
     this.setState({
       session_id
@@ -84,8 +89,6 @@ export default class App extends React.Component {
 
   componentDidMount() {
     const session_id = cookies.get("session_id");
-    console.log("LOL", session_id);
-
     if (session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
@@ -96,18 +99,23 @@ export default class App extends React.Component {
     }
   }
 
-  componentDidUpdate() {
-    // console.log("LOL", this.state.session_id);
-  }
-
   render() {
-    const { filters, page, total_pages, user, session_id } = this.state;
+    const {
+      filters,
+      page,
+      total_pages,
+      user,
+      session_id,
+      showModal
+    } = this.state;
     return (
       <div>
         <Header
           user={user}
           updateUser={this.updateUser}
           updateSessionId={this.updateSessionId}
+          toggleModal={this.toggleModal}
+          showModal={showModal}
         />
         <div className="container">
           <div className="row mt-4">
@@ -137,6 +145,7 @@ export default class App extends React.Component {
                 onChangePage={this.onChangePage}
                 getTotalPages={this.getTotalPages}
                 onChangeFilters={this.onChangeFilters}
+                toggleModal={this.toggleModal}
               />
             </div>
           </div>

@@ -2,6 +2,7 @@ import React from "react";
 
 export default class Pagination extends React.PureComponent {
   render() {
+    const { onChangePage, page, total_pages } = this.props;
     console.log("pagination");
     return (
       <React.Fragment>
@@ -9,9 +10,9 @@ export default class Pagination extends React.PureComponent {
           <button
             type="button"
             className="btn btn-light"
-            disabled={this.props.page === 1}
+            disabled={page === 1}
             onClick={() => {
-              this.props.onChangePage(this.props.page - 1);
+              onChangePage(page - 1);
             }}
           >
             Назад
@@ -20,14 +21,14 @@ export default class Pagination extends React.PureComponent {
             type="button"
             className="btn btn-light"
             onClick={() => {
-              this.props.onChangePage(this.props.page + 1);
+              onChangePage(page + 1);
             }}
           >
             Вперед
           </button>
         </div>
         <div className="text-center">
-          {this.props.page} из {this.props.total_pages}
+          {page} из {total_pages}
         </div>
       </React.Fragment>
     );

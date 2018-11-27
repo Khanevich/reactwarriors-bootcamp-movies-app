@@ -1,12 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import UISelector from "../UIComponents/UISelector";
 
 export default class SortBy extends React.PureComponent {
-  static propTypes = {
-    sort_by: PropTypes.string.isRequired,
-    onChangeFilters: PropTypes.func.isRequired
-  };
   static defaultProps = {
     options: [
       {

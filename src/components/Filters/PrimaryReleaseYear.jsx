@@ -1,13 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import UISelector from "../UIComponents/UISelector";
 
 export default class PrimaryReleaseYear extends React.PureComponent {
-  static propTypes = {
-    primary_release_year: PropTypes.string.isRequired,
-    onChangeFilters: PropTypes.func.isRequired
-  };
-
   static defaultProps = {
     options: [
       {
