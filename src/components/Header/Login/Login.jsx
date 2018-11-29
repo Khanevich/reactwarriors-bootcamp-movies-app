@@ -3,7 +3,7 @@ import { Modal, ModalBody } from "reactstrap";
 import LoginForm from "./LoginForm";
 
 const Login = props => {
-  const { updateUser, updateSessionId, toggleModal, showModal } = props;
+  const { toggleModal, showModal } = props;
   return (
     <React.Fragment>
       <button className="btn btn-success" type="button" onClick={toggleModal}>
@@ -11,10 +11,7 @@ const Login = props => {
       </button>
       <Modal isOpen={showModal} toggle={toggleModal}>
         <ModalBody>
-          <LoginForm
-            updateUser={updateUser}
-            updateSessionId={updateSessionId}
-          />
+          <LoginForm />
         </ModalBody>
       </Modal>
     </React.Fragment>

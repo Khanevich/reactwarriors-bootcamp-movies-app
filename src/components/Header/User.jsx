@@ -1,4 +1,6 @@
 import React from "react";
+import AppContextHOC from "../HOC/AppContextHOC";
+import PropTypes from "prop-types";
 
 const User = props => {
   const { user } = props;
@@ -16,4 +18,19 @@ const User = props => {
   );
 };
 
-export default User;
+// const UserContainer = props => {
+//   return (
+//     <AppContext.Consumer>
+//       {context => {
+//         console.log("user_context", context);
+//         return <User user={context.user} {...props} />;
+//       }}
+//     </AppContext.Consumer>
+//   );
+// };
+
+User.propTypes = {
+  user: PropTypes.object
+};
+
+export default AppContextHOC(User);

@@ -1,14 +1,15 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../../api/api";
 import Field from "./Field/Field";
+import AppContextHOC from "../../HOC/AppContextHOC";
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
   constructor() {
     super();
     this.state = {
-      username: null,
-      password: null,
-      repeatPassword: null,
+      username: "StasKhanevich",
+      password: "terka2312",
+      repeatPassword: "terka2312",
       errors: {
         username: false,
         password: false,
@@ -280,3 +281,21 @@ export default class LoginForm extends React.Component {
     );
   }
 }
+
+// const LoginFormContainer = props => {
+//   return (
+//     <AppContext.Consumer>
+//       {context => {
+//         return (
+//           <LoginForm
+//             {...props}
+//             updateUser={context.updateUser}
+//             updateSessionId={context.updateSessionId}
+//           />
+//         );
+//       }}
+//     </AppContext.Consumer>
+//   );
+// };
+
+export default AppContextHOC(LoginForm);

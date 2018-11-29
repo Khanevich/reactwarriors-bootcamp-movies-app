@@ -3,7 +3,7 @@ import Login from "./Login/Login";
 import User from "./User";
 
 const Header = props => {
-  const { user, updateUser, updateSessionId, toggleModal, showModal } = props;
+  const { user, toggleModal, showModal } = props;
   return (
     <nav className="navbar navbar-dark bg-primary">
       <div className="container">
@@ -13,14 +13,9 @@ const Header = props => {
           </li>
         </ul>
         {user ? (
-          <User user={user} />
+          <User />
         ) : (
-          <Login
-            updateUser={updateUser}
-            updateSessionId={updateSessionId}
-            toggleModal={toggleModal}
-            showModal={showModal}
-          />
+          <Login toggleModal={toggleModal} showModal={showModal} />
         )}
       </div>
     </nav>

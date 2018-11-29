@@ -12,6 +12,8 @@ library.add(fas, far);
 
 const cookies = new Cookies();
 
+export const AppContext = React.createContext();
+
 export default class App extends React.Component {
   constructor() {
     super();
@@ -51,6 +53,7 @@ export default class App extends React.Component {
     this.setState({
       session_id
     });
+    console.log("session_idmusthave", session_id);
   };
 
   onChangeFilters = event => {
@@ -108,49 +111,56 @@ export default class App extends React.Component {
       session_id,
       showModal
     } = this.state;
+
     return (
-      <div>
-        <Header
-          user={user}
-          updateUser={this.updateUser}
-          updateSessionId={this.updateSessionId}
-          toggleModal={this.toggleModal}
-          showModal={showModal}
-        />
-        <div className="container">
-          <div className="row mt-4">
-            <div className="col-4">
-              <div className="card" style={{ width: "100%" }}>
-                <div className="card-body">
-                  <h3>Фильтры:</h3>
-                  <button className="btn btn-light" onClick={this.onClear}>
-                    Отчистить
-                  </button>
-                  <Filters
-                    page={page}
-                    total_pages={total_pages}
-                    filters={filters}
-                    onChangeFilters={this.onChangeFilters}
-                    onChangePage={this.onChangePage}
-                  />
+      <AppContext.Provider
+        value={{
+          user,
+          session_id,
+          updateSessionId: this.updateSessionId,
+          updateUser: this.updateUser
+        }}
+      >
+        <div>
+          <Header
+            user={user}
+            toggleModal={this.toggleModal}
+            showModal={showModal}
+          />
+          <div className="container">
+            <div className="row mt-4">
+              <div className="col-4">
+                <div className="card" style={{ width: "100%" }}>
+                  <div className="card-body">
+                    <h3>Фильтры:</h3>
+                    <button className="btn btn-light" onClick={this.onClear}>
+                      Отчистить
+                    </button>
+                    <Filters
+                      page={page}
+                      session_id={session_id}
+                      total_pages={total_pages}
+                      filters={filters}
+                      onChangeFilters={this.onChangeFilters}
+                      onChangePage={this.onChangePage}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="col-8">
-              <MoviesList
-                session_id={session_id}
-                user={user}
-                filters={filters}
-                page={page}
-                onChangePage={this.onChangePage}
-                getTotalPages={this.getTotalPages}
-                onChangeFilters={this.onChangeFilters}
-                toggleModal={this.toggleModal}
-              />
+              <div className="col-8">
+                <MoviesList
+                  filters={filters}
+                  page={page}
+                  onChangePage={this.onChangePage}
+                  getTotalPages={this.getTotalPages}
+                  onChangeFilters={this.onChangeFilters}
+                  toggleModal={this.toggleModal}
+                />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </AppContext.Provider>
     );
   }
 }
