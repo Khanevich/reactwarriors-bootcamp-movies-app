@@ -28,18 +28,4 @@ export const fetchApi = (url, options = {}) => {
 };
 
 
-export default class CallApi {
-  get() {
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${with_genres}`;
-    fetch(link)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        this.setState({
-          movies: data.results
-        });
-        this.props.getTotalPages(data.total_pages);
-      });
-  }
-}
+
