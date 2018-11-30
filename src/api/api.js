@@ -29,6 +29,7 @@ export const fetchApi = (url, options = {}) => {
   });
 };
 
+<<<<<<< HEAD
 export default class CallApi {
   static get(url, options = {}) {
     const { params = {} } = options;
@@ -66,3 +67,7 @@ export default class CallApi {
     );
   }
 }
+=======
+
+
+>>>>>>> 70950eb35ac4b4a7eceb1f3e8e314d30a613722d
