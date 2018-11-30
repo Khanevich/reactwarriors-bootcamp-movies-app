@@ -1,3 +1,5 @@
+import queryString from "query-string";
+
 export const API_URL = "https://api.themoviedb.org/3";
 
 export const API_KEY_3 = "d024515fed3788f3300834e8926d73c0";
@@ -27,19 +29,40 @@ export const fetchApi = (url, options = {}) => {
   });
 };
 
-
 export default class CallApi {
-  get() {
-    const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${with_genres}`;
-    fetch(link)
-      .then(response => {
-        return response.json();
-      })
-      .then(data => {
-        this.setState({
-          movies: data.results
-        });
-        this.props.getTotalPages(data.total_pages);
-      });
+  static get(url, options = {}) {
+    const { params = {} } = options;
+    const queryStringParams = {
+      api_key: API_KEY_3,
+      ...params
+    };
+
+    return fetchApi(
+      `${API_URL}${url}?${queryString.stringify(queryStringParams)}`,
+      {
+        mode: "cors",
+        headers: {
+          "Content-type": "application/json"
+        }
+      }
+    );
+  }
+  static post(url, options = {}) {
+    const { params = {}, body = {} } = options;
+    const queryStringParams = {
+      api_key: API_KEY_3,
+      ...params
+    };
+    return fetchApi(
+      `${API_URL}${url}?${queryString.stringify(queryStringParams)}`,
+      {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-type": "application/json"
+        },
+        body: JSON.stringify(body)
+      }
+    );
   }
 }

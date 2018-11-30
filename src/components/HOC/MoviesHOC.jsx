@@ -1,5 +1,5 @@
 import React from "react";
-import { API_URL, API_KEY_3 } from "../../api/api";
+import CallApi from "../../api/api";
 
 export default Component =>
   class MovieHOC extends React.Component {
@@ -13,17 +13,25 @@ export default Component =>
 
     getMovies = (filters, page) => {
       const { sort_by, primary_release_year, with_genres } = filters;
-      const link = `${API_URL}/discover/movie?api_key=${API_KEY_3}&language=ru-RU&sort_by=${sort_by}&page=${page}&primary_release_year=${primary_release_year}&with_genres=${with_genres}`;
-      fetch(link)
-        .then(response => {
-          return response.json();
-        })
-        .then(data => {
-          this.setState({
-            movies: data.results
-          });
-          this.props.getTotalPages(data.total_pages);
+      const queryStringParams = {
+        language: "ru-RU",
+        sort_by: sort_by,
+        page: page,
+        primary_release_year: primary_release_year
+      };
+      console.log("BEFORE", with_genres);
+      if (with_genres.length > 0) {
+        queryStringParams.with_genres = with_genres.join(",");
+      }
+      console.log("AFTER", queryStringParams.with_genres);
+      CallApi.get("/discover/movie", {
+        params: queryStringParams
+      }).then(data => {
+        this.setState({
+          movies: data.results
         });
+        this.props.getTotalPages(data.total_pages);
+      });
     };
 
     componentDidMount() {
