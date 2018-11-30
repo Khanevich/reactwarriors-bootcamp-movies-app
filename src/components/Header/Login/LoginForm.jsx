@@ -190,6 +190,7 @@ class LoginForm extends React.Component {
         this.setState({
           submitting: false
         });
+        this.props.toggleModal();
         console.log(user);
       })
       .catch(error => {

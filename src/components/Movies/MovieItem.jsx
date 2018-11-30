@@ -1,10 +1,9 @@
 import React from "react";
-import Favorite from "./Favorite";
-import WatchList from "./WatchList";
+import Favorite from "../UIComponents/Favorite";
 
 class MovieItem extends React.Component {
   render() {
-    const { item, toggleModal } = this.props;
+    const { item } = this.props;
     return (
       <div className="card" style={{ width: "100%" }}>
         <img
@@ -16,8 +15,8 @@ class MovieItem extends React.Component {
         <div className="card-body">
           <h6 className="card-title">{item.title}</h6>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
-          <Favorite item={item} toggleModal={toggleModal} />
-          <WatchList item={item} toggleModal={toggleModal} />
+          <Favorite item={item} icon_name="favorite" icon_style="heart" />
+          <Favorite item={item} icon_name="watchlist" icon_style="bookmark" />
         </div>
       </div>
     );

@@ -1,33 +1,34 @@
 import React from "react";
 import AppContextHOC from "../HOC/AppContextHOC";
 import PropTypes from "prop-types";
+import {
+  UncontrolledDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
+} from "reactstrap";
 
 const User = props => {
-  const { user } = props;
+  const { user, logOut } = props;
+
   return (
-    <div>
-      <img
-        width="40"
-        className="rounded-circle"
-        src={`https://secure.gravatar.com/avatar/${
-          user.avatar.gravatar.hash
-        }.jpg?s=64"`}
-        alt="avatar"
-      />
-    </div>
+    <UncontrolledDropdown>
+      <DropdownToggle nav>
+        <img
+          width="40"
+          className="rounded-circle"
+          src={`https://secure.gravatar.com/avatar/${
+            user.avatar.gravatar.hash
+          }.jpg?s=64"`}
+          alt="avatar"
+        />
+      </DropdownToggle>
+      <DropdownMenu right>
+        <DropdownItem onClick={logOut}>Выйти</DropdownItem>
+      </DropdownMenu>
+    </UncontrolledDropdown>
   );
 };
-
-// const UserContainer = props => {
-//   return (
-//     <AppContext.Consumer>
-//       {context => {
-//         console.log("user_context", context);
-//         return <User user={context.user} {...props} />;
-//       }}
-//     </AppContext.Consumer>
-//   );
-// };
 
 User.propTypes = {
   user: PropTypes.object

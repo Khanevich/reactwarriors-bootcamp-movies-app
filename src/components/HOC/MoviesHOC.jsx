@@ -52,7 +52,7 @@ export default Component =>
     }
     render() {
       const { movies } = this.state;
-      const { toggleModal } = this.props;
-      return <Component movies={movies} toggleModal={toggleModal} />;
+      // const { toggleModal } = this.props;
+      return <Component movies={movies} />;
     }
   };

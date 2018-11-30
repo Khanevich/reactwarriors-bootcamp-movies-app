@@ -3,6 +3,8 @@ import Filters from "./Filters/Filters";
 import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
 import Cookies from "universal-cookie";
+import { Modal, ModalBody } from "reactstrap";
+import LoginForm from "./Header/Login/LoginForm";
 import { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -31,6 +33,26 @@ export default class App extends React.Component {
     };
   }
 
+  logOut = (user, session_id) => {
+    fetchApi(`${API_URL}/authentication/session?api_key=${API_KEY_3}`, {
+      method: "DELETE",
+      mode: "cors",
+      headers: {
+        "Content-type": "application/json"
+      },
+      body: JSON.stringify({
+        session_id: this.state.session_id
+      })
+    })
+      .then(() =>
+        this.setState({
+          user: null,
+          session_id: null
+        })
+      )
+      .then(() => cookies.remove("session_id"));
+  };
+
   toggleModal = () => {
     console.log("toggle");
     this.setState(prevState => ({
@@ -53,7 +75,6 @@ export default class App extends React.Component {
     this.setState({
       session_id
     });
-    console.log("session_idmusthave", session_id);
   };
 
   onChangeFilters = event => {
@@ -68,6 +89,7 @@ export default class App extends React.Component {
   };
 
   onChangePage = page => {
+    console.log(page);
     this.setState({
       page
     });
@@ -117,16 +139,23 @@ export default class App extends React.Component {
         value={{
           user,
           session_id,
+          page,
+          total_pages,
           updateSessionId: this.updateSessionId,
-          updateUser: this.updateUser
+          updateUser: this.updateUser,
+          toggleModal: this.toggleModal,
+          showModal,
+          logOut: this.logOut,
+          onChangePage: this.onChangePage
         }}
       >
         <div>
-          <Header
-            user={user}
-            toggleModal={this.toggleModal}
-            showModal={showModal}
-          />
+          <Modal isOpen={this.state.showModal} toggle={this.toggleModal}>
+            <ModalBody>
+              <LoginForm />
+            </ModalBody>
+          </Modal>
+          <Header user={user} toggleModal={this.toggleModal} />
           <div className="container">
             <div className="row mt-4">
               <div className="col-4">
@@ -142,7 +171,6 @@ export default class App extends React.Component {
                       total_pages={total_pages}
                       filters={filters}
                       onChangeFilters={this.onChangeFilters}
-                      onChangePage={this.onChangePage}
                     />
                   </div>
                 </div>
@@ -154,7 +182,6 @@ export default class App extends React.Component {
                   onChangePage={this.onChangePage}
                   getTotalPages={this.getTotalPages}
                   onChangeFilters={this.onChangeFilters}
-                  toggleModal={this.toggleModal}
                 />
               </div>
             </div>

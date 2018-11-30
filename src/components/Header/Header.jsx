@@ -1,9 +1,8 @@
 import React from "react";
-import Login from "./Login/Login";
 import User from "./User";
 
 const Header = props => {
-  const { user, toggleModal, showModal } = props;
+  const { user, toggleModal } = props;
   return (
     <nav className="navbar navbar-dark bg-primary">
       <div className="container">
@@ -15,7 +14,13 @@ const Header = props => {
         {user ? (
           <User />
         ) : (
-          <Login toggleModal={toggleModal} showModal={showModal} />
+          <button
+            className="btn btn-success"
+            type="button"
+            onClick={toggleModal}
+          >
+            Login
+          </button>
         )}
       </div>
     </nav>

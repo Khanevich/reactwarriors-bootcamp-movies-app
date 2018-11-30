@@ -9,8 +9,7 @@ const Filters = props => {
     filters: { sort_by, primary_release_year, with_genres },
     page,
     total_pages,
-    onChangeFilters,
-    onChangePage
+    onChangeFilters
   } = props;
 
   return (
@@ -24,11 +23,7 @@ const Filters = props => {
         with_genres={with_genres}
         onChangeFilters={onChangeFilters}
       />
-      <Pagination
-        page={page}
-        total_pages={total_pages}
-        onChangePage={onChangePage}
-      />
+      <Pagination page={page} total_pages={total_pages} />
     </form>
   );
 };
