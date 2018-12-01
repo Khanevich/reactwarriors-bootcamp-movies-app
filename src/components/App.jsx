@@ -29,7 +29,7 @@ export default class App extends React.Component {
       },
       page: 1,
       total_pages: "",
-      showModal: false
+      showLoginModal: false
     };
   }
 
@@ -56,7 +56,7 @@ export default class App extends React.Component {
   toggleModal = () => {
     console.log("toggle");
     this.setState(prevState => ({
-      showModal: !prevState.showModal
+      showLoginModal: !prevState.showLoginModal
     }));
   };
 
@@ -131,7 +131,7 @@ export default class App extends React.Component {
       total_pages,
       user,
       session_id,
-      showModal
+      showLoginModal
     } = this.state;
 
     return (
@@ -144,13 +144,12 @@ export default class App extends React.Component {
           updateSessionId: this.updateSessionId,
           updateUser: this.updateUser,
           toggleModal: this.toggleModal,
-          showModal,
-          logOut: this.logOut,
-          onChangePage: this.onChangePage
+          showLoginModal,
+          logOut: this.logOut
         }}
       >
         <div>
-          <Modal isOpen={this.state.showModal} toggle={this.toggleModal}>
+          <Modal isOpen={this.state.showLoginModal} toggle={this.toggleModal}>
             <ModalBody>
               <LoginForm />
             </ModalBody>
@@ -171,6 +170,7 @@ export default class App extends React.Component {
                       total_pages={total_pages}
                       filters={filters}
                       onChangeFilters={this.onChangeFilters}
+                      onChangePage={this.onChangePage}
                     />
                   </div>
                 </div>
