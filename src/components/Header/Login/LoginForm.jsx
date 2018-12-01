@@ -282,20 +282,4 @@ class LoginForm extends React.Component {
   }
 }
 
-// const LoginFormContainer = props => {
-//   return (
-//     <AppContext.Consumer>
-//       {context => {
-//         return (
-//           <LoginForm
-//             {...props}
-//             updateUser={context.updateUser}
-//             updateSessionId={context.updateSessionId}
-//           />
-//         );
-//       }}
-//     </AppContext.Consumer>
-//   );
-// };
-
 export default AppContextHOC(LoginForm);

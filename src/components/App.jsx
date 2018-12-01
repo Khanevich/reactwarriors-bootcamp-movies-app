@@ -139,8 +139,6 @@ export default class App extends React.Component {
         value={{
           user,
           session_id,
-          page,
-          total_pages,
           updateSessionId: this.updateSessionId,
           updateUser: this.updateUser,
           toggleModal: this.toggleModal,
