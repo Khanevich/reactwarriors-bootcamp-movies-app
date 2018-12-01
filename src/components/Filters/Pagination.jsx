@@ -1,7 +1,19 @@
 import React from "react";
+import AppContextHOC from "../HOC/AppContextHOC";
 
-export default class Pagination extends React.PureComponent {
+class Pagination extends React.PureComponent {
+
+  pageDecrement = () => {
+    this.props.onChangePage(this.props.page - 1)
+  }
+
+  pageIncrement = () => {
+    console.log("increment")
+    this.props.onChangePage(this.props.page + 1)
+  }
+
   render() {
+    const { page, total_pages } = this.props;
     console.log("pagination");
     return (
       <React.Fragment>
@@ -9,27 +21,25 @@ export default class Pagination extends React.PureComponent {
           <button
             type="button"
             className="btn btn-light"
-            disabled={this.props.page === 1}
-            onClick={() => {
-              this.props.onChangePage(this.props.page - 1);
-            }}
+            disabled={page === 1}
+            onClick={this.pageDecrement}  
           >
             Назад
           </button>
           <button
             type="button"
             className="btn btn-light"
-            onClick={() => {
-              this.props.onChangePage(this.props.page + 1);
-            }}
+            onClick={this.pageIncrement}
           >
             Вперед
           </button>
         </div>
         <div className="text-center">
-          {this.props.page} из {this.props.total_pages}
+          {page} из {total_pages}
         </div>
       </React.Fragment>
     );
   }
 }
+
+export default AppContextHOC(Pagination);

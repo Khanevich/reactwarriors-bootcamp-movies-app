@@ -1,14 +1,15 @@
 import React from "react";
-import { API_URL, API_KEY_3, fetchApi } from "../../api/api";
+import CallApi from "../../../api/api";
 import Field from "./Field/Field";
+import AppContextHOC from "../../HOC/AppContextHOC";
 
-export default class LoginForm extends React.Component {
+class LoginForm extends React.Component {
   constructor() {
     super();
     this.state = {
-      username: null,
-      password: null,
-      repeatPassword: null,
+      username: "",
+      password: "",
+      repeatPassword: "",
       errors: {
         username: false,
         password: false,
@@ -20,7 +21,6 @@ export default class LoginForm extends React.Component {
   }
 
   onChangeInfo = event => {
-    // console.log(this.state);
     const name = event.target.name;
     const value = event.target.value;
     this.setState(prevState => ({
@@ -60,11 +60,6 @@ export default class LoginForm extends React.Component {
       errors.repeatPassword = "Passwords must be the same";
     }
     return errors;
-  };
-  toggleModal = () => {
-    this.setState(prevState => ({
-      showModal: !prevState.showModal
-    }));
   };
 
   // onSubmit = async () => {
@@ -126,6 +121,14 @@ export default class LoginForm extends React.Component {
   //         })
   //       }
   //     );
+  //     this.props.updateSessionId(session_id);
+  //     const user = await fetchApi(
+  //       `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
+  //     );
+  //     this.props.updateUser(user);
+  //     this.setState({
+  //       submitting: false
+  //     });
   //   } catch (error) {
   //     this.setState({
   //       submitting: false,
@@ -141,52 +144,53 @@ export default class LoginForm extends React.Component {
     this.setState({
       submitting: true
     });
-    fetchApi(`${API_URL}/authentication/token/new?api_key=${API_KEY_3}`)
+    CallApi.get("/authentication/token/new")
       .then(data => {
-        return fetchApi(
-          `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
-          {
-            method: "POST",
-            mode: "cors",
-            headers: {
-              "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-              username: this.state.username,
-              password: this.state.password,
-              request_token: data.request_token
-            })
+        return CallApi.post("/authentication/token/validate_with_login", {
+          body: {
+            username: this.state.username,
+            password: this.state.password,
+            request_token: data.request_token
           }
-        );
+        });
+        // fetchApi(
+        //   `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
+        //   {
+        //     method: "POST",
+        //     mode: "cors",
+        //     headers: {
+        //       "Content-type": "application/json"
+        //     },
+        //     body: JSON.stringify({
+        //       username: this.state.username,
+        //       password: this.state.password,
+        //       request_token: data.request_token
+        //     })
+        //   }
+        // );
       })
       .then(data => {
-        return fetchApi(
-          `${API_URL}/authentication/session/new?api_key=${API_KEY_3}`,
-          {
-            method: "POST",
-            mode: "cors",
-            headers: {
-              "Content-type": "application/json"
-            },
-            body: JSON.stringify({
-              request_token: data.request_token
-            })
+        return CallApi.post("/authentication/session/new", {
+          body: {
+            request_token: data.request_token
           }
-        );
+        });
       })
       .then(data => {
         this.props.updateSessionId(data.session_id);
-        return fetchApi(
-          `${API_URL}/account?api_key=${API_KEY_3}&session_id=${
-            data.session_id
-          }`
-        );
+        return CallApi.get("/account", {
+          params: {
+            session_id: data.session_id
+          }
+        });
       })
       .then(user => {
         this.props.updateUser(user);
         this.setState({
           submitting: false
         });
+        this.props.toggleModal();
+        console.log(user);
       })
       .catch(error => {
         console.log("error", error);
@@ -277,3 +281,21 @@ export default class LoginForm extends React.Component {
     );
   }
 }
+
+// const LoginFormContainer = props => {
+//   return (
+//     <AppContext.Consumer>
+//       {context => {
+//         return (
+//           <LoginForm
+//             {...props}
+//             updateUser={context.updateUser}
+//             updateSessionId={context.updateSessionId}
+//           />
+//         );
+//       }}
+//     </AppContext.Consumer>
+//   );
+// };
+
+export default AppContextHOC(LoginForm);

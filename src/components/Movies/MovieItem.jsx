@@ -1,9 +1,7 @@
 import React from "react";
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStroopwafel } from "@fortawesome/free-solid-svg-icons";
+import Favorite from "../UIComponents/Favorite";
 
-export default class MovieItem extends React.Component {
+class MovieItem extends React.Component {
   render() {
     const { item } = this.props;
     return (
@@ -17,9 +15,12 @@ export default class MovieItem extends React.Component {
         <div className="card-body">
           <h6 className="card-title">{item.title}</h6>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
-          <FontAwesomeIcon icon="coffee" />
+          <Favorite item={item} icon_name="favorite" icon_style="heart" />
+          <Favorite item={item} icon_name="watchlist" icon_style="bookmark" />
         </div>
       </div>
     );
   }
 }
+
+export default MovieItem;
