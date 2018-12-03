@@ -1,5 +1,6 @@
 import React from "react";
-import Favorite from "../UIComponents/Favorite";
+import Favorites from "./Favorites";
+import WatchList from "./WatchList";
 
 class MovieItem extends React.Component {
   render() {
@@ -15,8 +16,8 @@ class MovieItem extends React.Component {
         <div className="card-body">
           <h6 className="card-title">{item.title}</h6>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
-          <Favorite item={item} icon_name="favorite" icon_style="heart" />
-          <Favorite item={item} icon_name="watchlist" icon_style="bookmark" />
+          <Favorites item={item} />
+          <WatchList item={item} />
         </div>
       </div>
     );

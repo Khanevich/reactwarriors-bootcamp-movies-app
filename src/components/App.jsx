@@ -5,7 +5,7 @@ import Header from "./Header/Header";
 import Cookies from "universal-cookie";
 import { Modal, ModalBody } from "reactstrap";
 import LoginForm from "./Header/Login/LoginForm";
-import { API_URL, API_KEY_3, fetchApi } from "../api/api";
+import CallApi, { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
@@ -29,9 +29,37 @@ export default class App extends React.Component {
       },
       page: 1,
       total_pages: "",
-      showLoginModal: false
+      showLoginModal: false,
+      favoriteMovies: [],
+      watchList: []
     };
   }
+
+  getFavoriteMovies = () => {
+    const { session_id, user } = this.state;
+    CallApi.get(`/account/${user.id}/favorite/movies`, {
+      params: {
+        session_id: session_id,
+        language: "ru-RU"
+      }
+    })
+      .then(data => {
+        this.setState({
+          favoriteMovies: [...data.results]
+        });
+        return CallApi.get(`/account/${user.id}/watchlist/movies`, {
+          params: {
+            session_id: session_id,
+            language: "ru-RU"
+          }
+        });
+      })
+      .then(data => {
+        this.setState({
+          watchList: [...data.results]
+        });
+      });
+  };
 
   logOut = (user, session_id) => {
     fetchApi(`${API_URL}/authentication/session?api_key=${API_KEY_3}`, {
@@ -120,6 +148,7 @@ export default class App extends React.Component {
       ).then(user => {
         this.updateUser(user);
         this.updateSessionId(session_id);
+        this.getFavoriteMovies();
       });
     }
   }
@@ -131,7 +160,9 @@ export default class App extends React.Component {
       total_pages,
       user,
       session_id,
-      showLoginModal
+      showLoginModal,
+      favoriteMovies,
+      watchList
     } = this.state;
 
     return (
@@ -143,7 +174,10 @@ export default class App extends React.Component {
           updateUser: this.updateUser,
           toggleModal: this.toggleModal,
           showLoginModal,
-          logOut: this.logOut
+          logOut: this.logOut,
+          favoriteMovies,
+          watchList,
+          getFavoriteMovies: this.getFavoriteMovies
         }}
       >
         <div>

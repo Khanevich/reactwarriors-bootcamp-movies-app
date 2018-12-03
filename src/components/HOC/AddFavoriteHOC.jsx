@@ -44,15 +44,9 @@ export default Component =>
 
     render() {
       const { isAdded } = this.state;
-      const { icon_name, icon_style } = this.props;
-      // const heartAccent = this.state.isAdd ? "fas" : "far";
+
       return (
-        <Component
-          isAdded={isAdded}
-          icon_name={icon_name}
-          icon_style={icon_style}
-          onAddFavorites={this.onAddFavorites}
-        />
+        <Component isAdded={isAdded} onAddFavorites={this.onAddFavorites} />
       );
     }
   };
