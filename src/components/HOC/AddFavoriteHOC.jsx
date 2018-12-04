@@ -1,12 +1,12 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../api/api";
 
-export default Component =>
+export default (Component, type) =>
   class AddFavoriteHOC extends React.Component {
-    constructor() {
-      super();
+    constructor(props) {
+      super(props);
       this.state = {
-        idAdded: false
+        idAdded: props[type].includes(props.item.id)
       };
     }
 
@@ -42,25 +42,11 @@ export default Component =>
       }
     };
 
-    // getLikesInfo = () => {
-    //   if (this.props.favoriteMovies.includes(this.props.item.id)) {
-    //     console.log("Hi");
-    //     this.setState({
-    //       isAdded: !this.state.isAdded
-    //     });
-    //   }
-    // };
-
     componentDidUpdate(prevProps, prevState) {
-      if (this.props.user !== prevProps.user) {
-        if (this.props.favoriteMovies.includes(this.props.item.id)) {
-          console.log("Hi");
-          this.setState({
-            isAdded: !this.state.isAdded
-          });
-        }
-        // console.log("Hello");
-        // this.getLikesInfo();
+      if (this.props[type] !== prevProps[type]) {
+        this.setState({
+          isAdded: this.props[type].includes(this.props.item.id)
+        });
       }
     }
 

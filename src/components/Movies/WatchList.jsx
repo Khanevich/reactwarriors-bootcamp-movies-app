@@ -14,4 +14,4 @@ const WatchList = ({ isAdded, onAddFavorites }) => {
   );
 };
 
-export default AppContextHOC(AddFavoriteHOC(WatchList));
+export default AppContextHOC(AddFavoriteHOC(WatchList, "watchList"));

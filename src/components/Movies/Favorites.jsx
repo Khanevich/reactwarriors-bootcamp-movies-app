@@ -14,4 +14,4 @@ const Favorites = ({ isAdded, onAddFavorites }) => {
   );
 };
 
-export default AppContextHOC(AddFavoriteHOC(Favorites));
+export default AppContextHOC(AddFavoriteHOC(Favorites, "favoriteMovies"));
