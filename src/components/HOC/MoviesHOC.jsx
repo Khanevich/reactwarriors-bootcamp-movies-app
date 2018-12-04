@@ -19,11 +19,11 @@ export default Component =>
         page: page,
         primary_release_year: primary_release_year
       };
-      console.log("BEFORE", with_genres);
+
       if (with_genres.length > 0) {
         queryStringParams.with_genres = with_genres.join(",");
       }
-      console.log("AFTER", queryStringParams.with_genres);
+
       CallApi.get("/discover/movie", {
         params: queryStringParams
       }).then(data => {
@@ -33,6 +33,17 @@ export default Component =>
         this.props.getTotalPages(data.total_pages);
       });
     };
+
+    // checkLikes = () => {
+    //   // this.state.movies.map(movie => {
+    //   //   if (this.props.favoriteMovies.includes(movie.id)) {
+    //   //     console.log("Hello");
+    //   //     this.setState({
+    //   //       likedMovieID: true
+    //   //     });
+    //   //   }
+    //   // });
+    // };
 
     componentDidMount() {
       this.getMovies(this.props.filters, this.props.page);
@@ -58,8 +69,9 @@ export default Component =>
         this.getMovies(this.props.filters, this.props.page);
       }
     }
+
     render() {
-      const { movies } = this.state;
-      return <Component movies={movies} />;
+      const { movies, likedMovieID } = this.state;
+      return <Component movies={movies} likedMovieID={likedMovieID} />;
     }
   };

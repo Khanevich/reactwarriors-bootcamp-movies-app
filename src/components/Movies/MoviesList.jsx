@@ -3,13 +3,13 @@ import MovieItem from "./MovieItem";
 import MoviesHOC from "../HOC/MoviesHOC";
 import PropTypes from "prop-types";
 
-const MoviesList = ({ movies }) => {
+const MoviesList = ({ movies, likedMovieID }) => {
   return (
     <div className="row">
       {movies.map(movie => {
         return (
           <div key={movie.id} className="col-6 mb-4">
-            <MovieItem item={movie} />
+            <MovieItem item={movie} likedMovieID={likedMovieID} />
           </div>
         );
       })}

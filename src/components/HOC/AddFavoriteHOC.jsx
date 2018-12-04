@@ -2,7 +2,7 @@ import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../api/api";
 
 export default Component =>
-  class Favorite extends React.Component {
+  class AddFavoriteHOC extends React.Component {
     constructor() {
       super();
       this.state = {
@@ -41,6 +41,28 @@ export default Component =>
         );
       }
     };
+
+    // getLikesInfo = () => {
+    //   if (this.props.favoriteMovies.includes(this.props.item.id)) {
+    //     console.log("Hi");
+    //     this.setState({
+    //       isAdded: !this.state.isAdded
+    //     });
+    //   }
+    // };
+
+    componentDidUpdate(prevProps, prevState) {
+      if (this.props.user !== prevProps.user) {
+        if (this.props.favoriteMovies.includes(this.props.item.id)) {
+          console.log("Hi");
+          this.setState({
+            isAdded: !this.state.isAdded
+          });
+        }
+        // console.log("Hello");
+        // this.getLikesInfo();
+      }
+    }
 
     render() {
       const { isAdded } = this.state;

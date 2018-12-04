@@ -44,8 +44,12 @@ export default class App extends React.Component {
       }
     })
       .then(data => {
+        const moviesID = [];
+        data.results.map(movie => {
+          moviesID.push(movie.id);
+        });
         this.setState({
-          favoriteMovies: [...data.results]
+          favoriteMovies: [...moviesID]
         });
         return CallApi.get(`/account/${user.id}/watchlist/movies`, {
           params: {
@@ -55,8 +59,12 @@ export default class App extends React.Component {
         });
       })
       .then(data => {
+        const moviesID = [];
+        data.results.map(movie => {
+          moviesID.push(movie.id);
+        });
         this.setState({
-          watchList: [...data.results]
+          watchList: [...moviesID]
         });
       });
   };
@@ -175,9 +183,9 @@ export default class App extends React.Component {
           toggleModal: this.toggleModal,
           showLoginModal,
           logOut: this.logOut,
+          getFavoriteMovies: this.getFavoriteMovies,
           favoriteMovies,
-          watchList,
-          getFavoriteMovies: this.getFavoriteMovies
+          watchList
         }}
       >
         <div>

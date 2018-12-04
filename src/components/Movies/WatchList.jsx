@@ -4,7 +4,7 @@ import AppContextHOC from "../HOC/AppContextHOC";
 import AddFavoriteHOC from "../HOC/AddFavoriteHOC";
 
 const WatchList = ({ isAdded, onAddFavorites }) => {
-  const watchlistStyle = isAdded ? "fas" : "far";
+  // const watchlistStyle = isAdded || isLiked ? "fas" : "far";
   return (
     <UIIcon
       onClick={onAddFavorites("watchlist")}
