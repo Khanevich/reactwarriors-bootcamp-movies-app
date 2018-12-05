@@ -10,3 +10,7 @@ body {
   max-height: 161.84px;
   object-fit: cover;
 }
+
+.card-title {
+  color: #000000;
+}

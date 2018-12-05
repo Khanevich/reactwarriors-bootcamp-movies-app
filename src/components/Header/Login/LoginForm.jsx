@@ -62,84 +62,6 @@ class LoginForm extends React.Component {
     return errors;
   };
 
-  // onSubmit = async () => {
-  //   const fetchApi = (url, options = {}) => {
-  //     return new Promise((resolve, reject) => {
-  //       fetch(url, options)
-  //         .then(response => {
-  //           if (response.status < 400) {
-  //             return response.json();
-  //           } else {
-  //             throw response;
-  //           }
-  //         })
-  //         .then(data => {
-  //           resolve(data);
-  //         })
-  //         .catch(response => {
-  //           response.json().then(error => {
-  //             reject(error);
-  //           });
-  //         });
-  //     });
-  //   };
-  //
-  //   try {
-  //     this.setState({
-  //       submitting: true
-  //     });
-  //     const data = await fetchApi(
-  //       `${API_URL}/authentication/token/new?api_key=${API_KEY_3}`
-  //     );
-  //
-  //     const result = await fetchApi(
-  //       `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
-  //       {
-  //         method: "POST",
-  //         mode: "cors",
-  //         headers: {
-  //           "Content-type": "application/json"
-  //         },
-  //         body: JSON.stringify({
-  //           username: this.state.username,
-  //           password: this.state.password,
-  //           request_token: data.request_token
-  //         })
-  //       }
-  //     );
-  //
-  //     const { session_id } = await fetchApi(
-  //       `${API_URL}/authentication/session/new?api_key=${API_KEY_3}`,
-  //       {
-  //         method: "POST",
-  //         mode: "cors",
-  //         headers: {
-  //           "Content-type": "application/json"
-  //         },
-  //         body: JSON.stringify({
-  //           request_token: result.request_token
-  //         })
-  //       }
-  //     );
-  //     this.props.updateSessionId(session_id);
-  //     const user = await fetchApi(
-  //       `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
-  //     );
-  //     this.props.updateUser(user);
-  //     this.setState({
-  //       submitting: false
-  //     });
-  //   } catch (error) {
-  //     this.setState({
-  //       submitting: false,
-  //       errors: {
-  //         base: error.status_message
-  //       }
-  //     });
-  //     console.log("error", error);
-  //   }
-  // };
-
   onSubmit = () => {
     this.setState({
       submitting: true
@@ -153,21 +75,6 @@ class LoginForm extends React.Component {
             request_token: data.request_token
           }
         });
-        // fetchApi(
-        //   `${API_URL}/authentication/token/validate_with_login?api_key=${API_KEY_3}`,
-        //   {
-        //     method: "POST",
-        //     mode: "cors",
-        //     headers: {
-        //       "Content-type": "application/json"
-        //     },
-        //     body: JSON.stringify({
-        //       username: this.state.username,
-        //       password: this.state.password,
-        //       request_token: data.request_token
-        //     })
-        //   }
-        // );
       })
       .then(data => {
         return CallApi.post("/authentication/session/new", {

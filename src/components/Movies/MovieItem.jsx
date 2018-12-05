@@ -1,10 +1,11 @@
 import React from "react";
 import Favorites from "./Favorites";
 import WatchList from "./WatchList";
+import { Link } from "react-router-dom";
 
 class MovieItem extends React.Component {
   render() {
-    const { item, likedMovieID } = this.props;
+    const { item } = this.props;
     return (
       <div className="card" style={{ width: "100%" }}>
         <img
@@ -14,10 +15,12 @@ class MovieItem extends React.Component {
           alt=""
         />
         <div className="card-body">
-          <h6 className="card-title">{item.title}</h6>
+          <Link to={`/movie/${item.id}`} className="card-title">
+            {item.title}
+          </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
-          <Favorites item={item} likedMovieID={likedMovieID} />
-          <WatchList item={item} likedMovieID={likedMovieID} />
+          <Favorites item={item} />
+          <WatchList item={item} />
         </div>
       </div>
     );
