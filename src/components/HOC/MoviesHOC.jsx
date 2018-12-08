@@ -2,7 +2,7 @@ import React from "react";
 import CallApi from "../../api/api";
 
 export default Component =>
-  class MovieHOC extends React.Component {
+  class MoviesHOC extends React.PureComponent {
     constructor() {
       super();
 

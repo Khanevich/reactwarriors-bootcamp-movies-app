@@ -2,20 +2,18 @@ import React from "react";
 import CallApi from "../../api/api";
 
 export default Component =>
-  class MovieInfoHOC extends React.Component {
+  class MovieHOC extends React.PureComponent {
     constructor() {
       super();
       this.state = {
         movieInfo: [],
-        activeTab: "1"
+        activeTab: "1",
+        movieCheck: []
       };
     }
 
-    getMovieInfo = () => {
-      console.log(this.state.movieInfo);
-    };
-
     componentDidMount() {
+      console.log("Component mount");
       CallApi.get(`/movie/${this.props.match.params.id}`, {
         params: {
           language: "ru-RU"
@@ -26,7 +24,9 @@ export default Component =>
         });
       });
     }
+
     render() {
+      console.log("render");
       const { movieInfo } = this.state;
       return <Component movieInfo={movieInfo} />;
     }
