@@ -6,11 +6,24 @@ body {
   display: block;
 }
 
-.card-img--height {
-  max-height: 161.84px;
-  object-fit: cover;
-}
-
 .card-title {
   color: #000000;
+}
+
+.movie-info {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 580px;
+  align-items: center;
+  background-color: #222a2f;
+}
+
+.movie-tab.active {
+  border: 1px solid black;
+}
+
+.movie-text {
+  display: inline;
+  vertical-align: bottom;
 }

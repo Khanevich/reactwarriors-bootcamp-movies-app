@@ -1,7 +1,7 @@
 import React from "react";
-import CallApi from "../../api/api";
+import CallApi from "../../../api/api";
 
-export default class MovieHOC extends React.Component {
+export default class MovieCredits extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -27,6 +27,7 @@ export default class MovieHOC extends React.Component {
       <div>
         {movieCredits.map(credit => (
           <img
+            key={credit.id}
             className="card-img"
             src={`https://image.tmdb.org/t/p/w500${credit.profile_path}`}
             style={{ width: "180px", height: "270px" }}

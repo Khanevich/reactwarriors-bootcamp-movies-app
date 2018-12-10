@@ -37,9 +37,7 @@ export default class App extends React.Component {
     })
       .then(data => {
         const moviesID = [];
-        data.results.map(movie => {
-          moviesID.push(movie.id);
-        });
+        data.results.map(movie => moviesID.push(movie.id));
         this.setState({
           favoriteMovies: [...moviesID]
         });
@@ -52,9 +50,7 @@ export default class App extends React.Component {
       })
       .then(data => {
         const moviesID = [];
-        data.results.map(movie => {
-          moviesID.push(movie.id);
-        });
+        data.results.map(movie => moviesID.push(movie.id));
         this.setState({
           watchList: [...moviesID]
         });

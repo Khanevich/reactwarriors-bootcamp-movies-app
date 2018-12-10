@@ -1,5 +1,4 @@
 import React from "react";
-import MovieHOC from "../HOC/MovieHOC";
 import { Badge, Table } from "reactstrap";
 class MovieDetail extends React.Component {
   render() {
@@ -72,4 +71,4 @@ class MovieDetail extends React.Component {
   }
 }
 
-export default MovieHOC(MovieDetail);
+export default MovieDetail;

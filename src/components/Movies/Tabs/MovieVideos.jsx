@@ -1,8 +1,8 @@
 import React from "react";
-import CallApi from "../../api/api";
+import CallApi from "../../../api/api";
 import { Media } from "reactstrap";
 
-export default class MovieHOC extends React.Component {
+export default class MovieVideos extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -24,7 +24,7 @@ export default class MovieHOC extends React.Component {
   render() {
     const { movieVideos } = this.state;
     return (
-      <div>
+      <React.Fragment>
         {movieVideos.map(video => (
           <Media key={video.id}>
             <Media left href="#">
@@ -46,7 +46,7 @@ export default class MovieHOC extends React.Component {
             </Media>
           </Media>
         ))}
-      </div>
+      </React.Fragment>
     );
   }
 }

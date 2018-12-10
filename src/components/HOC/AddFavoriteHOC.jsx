@@ -18,24 +18,24 @@ export default (Component, type) =>
       } else {
         this.setState(prevState => ({
           isAdded: !prevState.isAdded
-        })),
-          fetchApi(
-            `${API_URL}/account/${user.id}/${[
-              name
-            ]}?api_key=${API_KEY_3}&language=ru-RU&session_id=${session_id}`,
-            {
-              method: "POST",
-              mode: "cors",
-              headers: {
-                "Content-type": "application/json;charset=utf-8"
-              },
-              body: JSON.stringify({
-                media_type: "movie",
-                media_id: item.id,
-                [name]: this.state.isAdded
-              })
-            }
-          ).then(() => this.props.getFavoriteMovies());
+        }));
+        fetchApi(
+          `${API_URL}/account/${user.id}/${[
+            name
+          ]}?api_key=${API_KEY_3}&language=ru-RU&session_id=${session_id}`,
+          {
+            method: "POST",
+            mode: "cors",
+            headers: {
+              "Content-type": "application/json;charset=utf-8"
+            },
+            body: JSON.stringify({
+              media_type: "movie",
+              media_id: item.id,
+              [name]: this.state.isAdded
+            })
+          }
+        ).then(() => this.props.getFavoriteMovies());
       }
     };
 
