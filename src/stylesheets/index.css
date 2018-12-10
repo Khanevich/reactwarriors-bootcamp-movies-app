@@ -10,13 +10,30 @@ body {
   color: #000000;
 }
 
-.movie-info {
+.movie-container {
   display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: 580px;
+  justify-content: space-around;
+  flex-direction: row;
   align-items: center;
-  background-color: #222a2f;
+  background-color: rgba(9, 6, 33, 0.5);
+  height: 580px;
+}
+
+.movie-page {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  width: 1000px;
+}
+
+.movie-image {
+  z-index: 100;
+}
+
+.movie-tab {
+  color: black;
+  width: 30%;
 }
 
 .movie-tab.active {
@@ -24,6 +41,28 @@ body {
 }
 
 .movie-text {
-  display: inline;
-  vertical-align: bottom;
+  z-index: 100;
+  color: white;
+}
+
+.movie-icons {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.icon-style {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.icon-style svg {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(50%);
+  width: 40px !important;
+  height: 40px !important;
+  padding: 10px 0;
+  border: 2px solid;
+  border-radius: 50%;
 }

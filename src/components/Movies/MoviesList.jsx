@@ -16,8 +16,4 @@ const MoviesList = ({ movies, likedMovieID }) => {
   );
 };
 
-MoviesList.defaultProps = {
-  movies: []
-};
-
 export default MoviesHOC(MoviesList);

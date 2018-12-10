@@ -30,7 +30,7 @@ export default class MovieCredits extends React.Component {
             key={credit.id}
             className="card-img"
             src={`https://image.tmdb.org/t/p/w500${credit.profile_path}`}
-            style={{ width: "180px", height: "270px" }}
+            style={{ width: "180px", height: "270px", margin: "1px" }}
             alt=""
           />
         ))}

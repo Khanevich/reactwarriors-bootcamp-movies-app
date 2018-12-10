@@ -36,6 +36,7 @@ class MoviePage extends React.Component {
         <MovieTabs movieInfo={movieInfo} />
         <Switch>
           <Route
+            exact
             path="/movie/:id/detail"
             render={propsRouter => (
               <MovieDetail {...propsRouter} movieInfo={movieInfo} />

@@ -15,7 +15,7 @@ class MovieItem extends React.Component {
           alt=""
         />
         <div className="card-body">
-          <Link to={`/movie/${item.id}`} className="card-title">
+          <Link to={`/movie/${item.id}/detail`} className="card-title">
             {item.title}
           </Link>
           <div className="card-text">Рейтинг: {item.vote_average}</div>
