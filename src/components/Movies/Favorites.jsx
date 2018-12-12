@@ -7,7 +7,7 @@ const Favorites = ({ isAdded, onAddFavorites }) => {
   return (
     <UIIcon
       onClick={onAddFavorites("favorite")}
-      iconName={"heart"}
+      iconName="heart"
       isAdded={isAdded}
     />
   );

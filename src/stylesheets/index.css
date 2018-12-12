@@ -15,7 +15,7 @@ body {
   justify-content: space-around;
   flex-direction: row;
   align-items: center;
-  background-color: rgba(9, 6, 33, 0.5);
+  background-color: rgba(40, 40, 40, 0.7);
   height: 580px;
 }
 
@@ -33,11 +33,12 @@ body {
 
 .movie-tab {
   color: black;
-  width: 30%;
+  padding: 11px;
 }
 
 .movie-tab.active {
-  border: 1px solid black;
+  line-height: 100%;
+  outline: #e9ecef solid 1px;
 }
 
 .movie-text {

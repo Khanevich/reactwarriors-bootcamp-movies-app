@@ -12,39 +12,50 @@ class MoviePage extends React.Component {
   constructor() {
     super();
     this.state = {
-      movieInfo: []
+      movieInfo: {},
+      isLoading: false
     };
   }
 
   componentDidMount() {
     console.log("Component mount");
+    this.setState({
+      isLoading: true
+    });
     CallApi.get(`/movie/${this.props.match.params.id}`, {
       params: {
         language: "ru-RU"
       }
     }).then(data => {
       this.setState({
-        movieInfo: data
+        movieInfo: data,
+        isLoading: false
       });
     });
   }
   render() {
-    const { movieInfo } = this.state;
+    const { movieInfo, isLoading } = this.state;
     return (
       <div className="container-fluid">
-        <MovieInfo movieInfo={movieInfo} />
-        <MovieTabs movieInfo={movieInfo} />
-        <Switch>
-          <Route
-            exact
-            path="/movie/:id/detail"
-            render={propsRouter => (
-              <MovieDetail {...propsRouter} movieInfo={movieInfo} />
-            )}
-          />
-          <Route path="/movie/:id/videos" component={MovieVideos} />
-          <Route path="/movie/:id/credits" component={MovieCredits} />
-        </Switch>
+        {isLoading ? (
+          <p>loading</p>
+        ) : (
+          <React.Fragment>
+            <MovieInfo movieInfo={movieInfo} />
+            <MovieTabs movieInfo={movieInfo} />
+            <Switch>
+              <Route
+                exact
+                path="/movie/:id/detail"
+                render={propsRouter => (
+                  <MovieDetail {...propsRouter} movieInfo={movieInfo} />
+                )}
+              />
+              <Route path="/movie/:id/videos" component={MovieVideos} />
+              <Route path="/movie/:id/credits" component={MovieCredits} />
+            </Switch>
+          </React.Fragment>
+        )}
       </div>
     );
   }

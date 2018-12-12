@@ -9,6 +9,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { BrowserRouter, Route } from "react-router-dom";
+import Loader from "react-loader-spinner";
 
 library.add(fas, far);
 const cookies = new Cookies();
@@ -147,10 +148,6 @@ export default class App extends React.Component {
           }}
         >
           <div>
-            <LoginModal
-              showLoginModal={this.state.showLoginModal}
-              toggleModal={this.toggleModal}
-            />
             <Header user={user} toggleModal={this.toggleModal} />
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />

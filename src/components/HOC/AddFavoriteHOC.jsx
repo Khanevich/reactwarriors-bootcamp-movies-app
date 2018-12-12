@@ -6,8 +6,7 @@ export default (Component, type) =>
     constructor(props) {
       super(props);
       this.state = {
-        // idAdded: props[type].includes(props.item.id)
-        isAdded: false
+        idAdded: props[type].includes(props.item.id)
       };
     }
 
