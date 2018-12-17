@@ -7,6 +7,7 @@ import MovieTabs from "../Movies/MovieTabs";
 import CallApi from "../../api/api";
 import classnames from "classnames";
 import { Route, Switch } from "react-router-dom";
+import Loader from "react-loader-spinner";
 
 class MoviePage extends React.Component {
   constructor() {
@@ -38,7 +39,9 @@ class MoviePage extends React.Component {
     return (
       <div className="container-fluid">
         {isLoading ? (
-          <p>loading</p>
+          <span className="loader">
+            <Loader type="Puff" color="#00BFFF" height="100" width="100" />{" "}
+          </span>
         ) : (
           <React.Fragment>
             <MovieInfo movieInfo={movieInfo} />

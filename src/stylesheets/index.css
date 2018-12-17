@@ -67,3 +67,10 @@ body {
   border: 2px solid;
   border-radius: 50%;
 }
+
+.loader {
+  margin: 0 auto;
+  position: absolute;
+  top: 42%;
+  left: 45%;
+}

@@ -24,7 +24,8 @@ export default class App extends React.Component {
       session_id: null,
       showLoginModal: false,
       favoriteMovies: [],
-      watchList: []
+      watchList: [],
+      isLoading: false
     };
   }
 
@@ -85,13 +86,6 @@ export default class App extends React.Component {
       .then(() => cookies.remove("session_id"));
   };
 
-  // toggleModal = () => {
-  //   console.log("toggle");
-  //   this.setState(prevState => ({
-  //     showLoginModal: !prevState.showLoginModal
-  //   }));
-  // };
-
   updateUser = user => {
     this.setState({
       user
@@ -110,17 +104,28 @@ export default class App extends React.Component {
   };
 
   componentDidMount() {
+    this.setState({
+      isLoading: true
+    });
     const session_id = cookies.get("session_id");
     if (session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
-      ).then(user => {
-        this.updateUser(user);
-        this.updateSessionId(session_id);
-        this.getFavoriteMovies();
-      });
+      )
+        .then(user => {
+          this.updateUser(user);
+          this.updateSessionId(session_id);
+          this.getFavoriteMovies();
+        })
+        .then(() =>
+          this.setState({
+            isLoading: false
+          })
+        );
     }
   }
+
+
 
   render() {
     const {
@@ -128,7 +133,8 @@ export default class App extends React.Component {
       session_id,
       showLoginModal,
       favoriteMovies,
-      watchList
+      watchList,
+      isLoading
     } = this.state;
 
     return (
@@ -148,9 +154,13 @@ export default class App extends React.Component {
           }}
         >
           <div>
-            <Header user={user} toggleModal={this.toggleModal} />
-            <Route exact path="/" component={MoviesPage} />
-            <Route path="/movie/:id" component={MoviePage} />
+
+              <React.Fragment>
+                <Header user={user} toggleModal={this.toggleModal} />
+                <Route exact path="/" component={MoviesPage} />
+                <Route path="/movie/:id" component={MoviePage} />
+              </React.Fragment>
+
           </div>
         </AppContext.Provider>
       </BrowserRouter>
