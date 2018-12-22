@@ -92,6 +92,13 @@ export default class App extends React.Component {
     });
   };
 
+  updateAuth = (user, seesion_id) => {
+    this.setState({
+      user,
+      seesion_id
+    });
+  };
+
   updateSessionId = session_id => {
     cookies.set("session_id", session_id, {
       path: "/",
@@ -105,7 +112,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.setState({
-      isLoading: true
+      isLoading: false
     });
     const session_id = cookies.get("session_id");
     if (session_id) {
@@ -113,8 +120,7 @@ export default class App extends React.Component {
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
       )
         .then(user => {
-          this.updateUser(user);
-          this.updateSessionId(session_id);
+          this.updateAuth(user, session_id);
           this.getFavoriteMovies();
         })
         .then(() =>
@@ -124,8 +130,6 @@ export default class App extends React.Component {
         );
     }
   }
-
-
 
   render() {
     const {
@@ -153,15 +157,21 @@ export default class App extends React.Component {
             watchList
           }}
         >
-          <div>
-
-              <React.Fragment>
-                <Header user={user} toggleModal={this.toggleModal} />
-                <Route exact path="/" component={MoviesPage} />
-                <Route path="/movie/:id" component={MoviePage} />
-              </React.Fragment>
-
-          </div>
+          {isLoading ? (
+            <div className="loader">
+              <Loader type="Puff" color="#00BFFF" height="100" width="100" />
+            </div>
+          ) : (
+            <React.Fragment>
+              <LoginModal
+                showLoginModal={this.state.showLoginModal}
+                toggleModal={this.toggleModal}
+              />
+              <Header user={user} toggleModal={this.toggleModal} />
+              <Route exact path="/" component={MoviesPage} />
+              <Route path="/movie/:id" component={MoviePage} />
+            </React.Fragment>
+          )}
         </AppContext.Provider>
       </BrowserRouter>
     );

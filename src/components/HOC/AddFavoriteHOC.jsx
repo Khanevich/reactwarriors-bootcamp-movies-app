@@ -1,14 +1,21 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../api/api";
+import _ from "lodash";
 
 export default (Component, type) =>
   class AddFavoriteHOC extends React.PureComponent {
     constructor(props) {
       super(props);
       this.state = {
-        idAdded: props[type].includes(props.item.id)
+        // isAdded: this.props[type].includes(this.props.item.id)
+        isAdded: this.getAddById({
+          list: props[type],
+          id: props.item.id
+        })
       };
     }
+
+    getAddById = ({ list, id }) => list.some(item => item.id === id);
 
     onAddFavorites = name => () => {
       const { user, session_id, item, toggleModal } = this.props;
@@ -34,27 +41,50 @@ export default (Component, type) =>
               [name]: this.state.isAdded
             })
           }
-        ).then(() => this.props.getFavoriteMovies());
+        )
+          .then(() => this.props.getFavoriteMovies())
+          .then(() => console.log("hello"));
       }
     };
 
+    // componentDidUpdate(prevProps, prevState) {
+    //   if (
+    //     this.props[type].includes(this.props.item.id) !==
+    //     prevProps[type].includes(this.props.item.id)
+    //   ) {
+    //     this.setState({
+    //       isAdded: this.props[type].includes(this.props.item.id)
+    //     });
+    //   }
+    // }
+
     componentDidUpdate(prevProps, prevState) {
       if (
-        this.props[type].includes(this.props.item.id) !==
-        prevProps[type].includes(this.props.item.id)
+        !_.isEqual(prevProps[this.listName], this.props[this.listName]) &&
+        this.state.isAdded !==
+          this.getAddById({
+            list: this.props[this.listName],
+            id: this.props.item.id
+          })
       ) {
         this.setState({
-          isAdded: this.props[type].includes(this.props.item.id)
+          isAdded: this.getAddById({
+            list: this.props[this.listName],
+            id: this.props.item.id
+          })
         });
       }
     }
 
-    componentDidMount() {
-      this.setState({
-        isAdded: this.props[type].includes(this.props.item.id)
-        // isAdded: !this.state.isAdded
-      });
-    }
+    // componentDidMount() {
+    //   this.setState({
+    //     // isAdded: this.props[type].includes(this.props.item.id)
+    //     isAdded: this.getAddById({
+    //       list: this.props[type],
+    //       id: this.props.item.id
+    //     })
+    //   });
+    // }
 
     render() {
       console.log("ICONHOC");

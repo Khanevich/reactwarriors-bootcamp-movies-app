@@ -9,20 +9,22 @@ import classnames from "classnames";
 import { Route, Switch } from "react-router-dom";
 import Loader from "react-loader-spinner";
 
+
 class MoviePage extends React.Component {
   constructor() {
     super();
     this.state = {
       movieInfo: {},
       isLoading: false
+
     };
   }
 
   componentDidMount() {
-    console.log("Component mount");
     this.setState({
       isLoading: true
     });
+    console.log("Component mount");
     CallApi.get(`/movie/${this.props.match.params.id}`, {
       params: {
         language: "ru-RU"
@@ -32,17 +34,23 @@ class MoviePage extends React.Component {
         movieInfo: data,
         isLoading: false
       });
-    });
+    })
   }
   render() {
     const { movieInfo, isLoading } = this.state;
     return (
       <div className="container-fluid">
+
         {isLoading ? (
-          <span className="loader">
-            <Loader type="Puff" color="#00BFFF" height="100" width="100" />{" "}
-          </span>
-        ) : (
+          <div className="loader">
+          <Loader
+         type="Puff"
+         color="#00BFFF"
+         height="100"
+         width="100"
+      />
+         </div>
+     ) : (
           <React.Fragment>
             <MovieInfo movieInfo={movieInfo} />
             <MovieTabs movieInfo={movieInfo} />
