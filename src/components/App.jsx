@@ -31,6 +31,7 @@ export default class App extends React.Component {
 
   getFavoriteMovies = () => {
     const { session_id, user } = this.state;
+    console.log(session_id, user);
     CallApi.get(`/account/${user.id}/favorite/movies`, {
       params: {
         session_id: session_id,
@@ -92,10 +93,10 @@ export default class App extends React.Component {
     });
   };
 
-  updateAuth = (user, seesion_id) => {
+  updateAuth = (user, session_id) => {
     this.setState({
       user,
-      seesion_id
+      session_id
     });
   };
 
@@ -118,16 +119,22 @@ export default class App extends React.Component {
     if (session_id) {
       fetchApi(
         `${API_URL}/account?api_key=${API_KEY_3}&session_id=${session_id}`
-      )
-        .then(user => {
-          this.updateAuth(user, session_id);
-          this.getFavoriteMovies();
-        })
-        .then(() =>
-          this.setState({
+      ).then(user => {
+        this.setState(
+          {
             isLoading: false
-          })
+          },
+          () => {
+            this.updateAuth(user, session_id);
+          }
         );
+      });
+    }
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.user === null && this.state.user !== prevState.user) {
+      this.getFavoriteMovies();
     }
   }
 
