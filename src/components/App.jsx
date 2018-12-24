@@ -11,14 +11,12 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import { BrowserRouter, Route } from "react-router-dom";
 import Loader from "react-loader-spinner";
 import Store from "../store/store";
-import { observer } from "mobx";
 
 library.add(fas, far);
 const cookies = new Cookies();
 
 export const AppContext = React.createContext();
 
-@observer
 export default class App extends React.Component {
   constructor() {
     super();
