@@ -2,7 +2,7 @@ import React from "react";
 import CallApi from "../../api/api";
 
 export default Component =>
-  class MovieHOC extends React.Component {
+  class MoviesHOC extends React.PureComponent {
     constructor() {
       super();
 
@@ -34,17 +34,6 @@ export default Component =>
       });
     };
 
-    // checkLikes = () => {
-    //   // this.state.movies.map(movie => {
-    //   //   if (this.props.favoriteMovies.includes(movie.id)) {
-    //   //     console.log("Hello");
-    //   //     this.setState({
-    //   //       likedMovieID: true
-    //   //     });
-    //   //   }
-    //   // });
-    // };
-
     componentDidMount() {
       this.getMovies(this.props.filters, this.props.page);
     }
@@ -71,7 +60,7 @@ export default Component =>
     }
 
     render() {
-      const { movies, likedMovieID } = this.state;
-      return <Component movies={movies} likedMovieID={likedMovieID} />;
+      const { movies } = this.state;
+      return <Component movies={movies} />;
     }
   };

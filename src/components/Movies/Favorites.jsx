@@ -4,11 +4,10 @@ import AppContextHOC from "../HOC/AppContextHOC";
 import AddFavoriteHOC from "../HOC/AddFavoriteHOC";
 
 const Favorites = ({ isAdded, onAddFavorites }) => {
-  // const favoriteStyle = isAdded || isLiked ? "fas" : "far";
   return (
     <UIIcon
       onClick={onAddFavorites("favorite")}
-      iconName={"heart"}
+      iconName="heart"
       isAdded={isAdded}
     />
   );

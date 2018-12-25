@@ -11,24 +11,15 @@ export default class GenresContainer extends React.PureComponent {
   }
 
   componentDidMount() {
-    CallApi.get("/genre/movie/list", {
-      params: {
-        language: "ru-RU"
-      }
-    }).then(data => {
-      this.setState({
-        genresList: data.genres
-      });
-    });
-    // fetch(link)
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       genresList: data.genres
-    //     });
+    // CallApi.get("/genre/movie/list", {
+    //   params: {
+    //     language: "ru-RU"
+    //   }
+    // }).then(data => {
+    //   this.setState({
+    //     genresList: data.genres
     //   });
+    // });
   }
 
   onChange = event => {

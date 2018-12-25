@@ -1,6 +1,5 @@
 import React from "react";
 import AppContextHOC from "../HOC/AppContextHOC";
-import PropTypes from "prop-types";
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -28,10 +27,6 @@ const User = props => {
       </DropdownMenu>
     </UncontrolledDropdown>
   );
-};
-
-User.propTypes = {
-  user: PropTypes.object
 };
 
 export default AppContextHOC(User);

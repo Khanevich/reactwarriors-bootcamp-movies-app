@@ -1,10 +1,9 @@
 import React from "react";
-import Filters from "./Filters/Filters";
-import MoviesList from "./Movies/MoviesList";
 import Header from "./Header/Header";
+import MoviesPage from "./Pages/MoviesPage";
+import MoviePage from "./Pages/MoviePage";
+import LoginModal from "./Modals/LoginModal";
 import Cookies from "universal-cookie";
-import { Modal, ModalBody } from "reactstrap";
-import LoginForm from "./Header/Login/LoginForm";
 import CallApi, { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { fas } from "@fortawesome/free-solid-svg-icons";
@@ -12,11 +11,19 @@ import { far } from "@fortawesome/free-regular-svg-icons";
 import MainStore from "../store/mainStore";
 
 library.add(fas, far);
-
 const cookies = new Cookies();
 
 export const AppContext = React.createContext();
 
+@inject(({ store: mainStore }) => ({
+  user: mainStore.user,
+  showLoginModal: mainStore.showLoginModal,
+  toggleModal: mainStore.toggleModal,
+  isLoading: mainStore.isLoading,
+  pageMount: mainStore.pageMount,
+  pageUpdate: mainStore.pageUpdate
+}))
+@observer
 export default class App extends React.Component {
   // constructor() {
   //   super();
@@ -158,72 +165,26 @@ export default class App extends React.Component {
   }
 
   render() {
-    const {
-      filters,
-      page,
-      total_pages,
-      user,
-      session_id,
-      showLoginModal,
-      favoriteMovies,
-      watchList
-    } = this.state;
+    const { user, showLoginModal, toggleModal, isLoading } = this.props;
 
     return (
-      <AppContext.Provider
-        value={{
-          user,
-          session_id,
-          updateSessionId: this.updateSessionId,
-          updateUser: this.updateUser,
-          toggleModal: this.toggleModal,
-          showLoginModal,
-          logOut: this.logOut,
-          getFavoriteMovies: this.getFavoriteMovies,
-          favoriteMovies,
-          watchList
-        }}
-      >
-        <div>
-          <Modal isOpen={this.state.showLoginModal} toggle={this.toggleModal}>
-            <ModalBody>
-              <LoginForm />
-            </ModalBody>
-          </Modal>
-          <Header user={user} toggleModal={this.toggleModal} />
-          <div className="container">
-            <div className="row mt-4">
-              <div className="col-4">
-                <div className="card" style={{ width: "100%" }}>
-                  <div className="card-body">
-                    <h3>Фильтры:</h3>
-                    <button className="btn btn-light" onClick={this.onClear}>
-                      Отчистить
-                    </button>
-                    <Filters
-                      page={page}
-                      session_id={session_id}
-                      total_pages={total_pages}
-                      filters={filters}
-                      onChangeFilters={this.onChangeFilters}
-                      onChangePage={this.onChangePage}
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="col-8">
-                <MoviesList
-                  filters={filters}
-                  page={page}
-                  onChangePage={this.onChangePage}
-                  getTotalPages={this.getTotalPages}
-                  onChangeFilters={this.onChangeFilters}
-                />
-              </div>
-            </div>
+      <BrowserRouter>
+        {isLoading ? (
+          <div className="loader">
+            <Loader type="Puff" color="#00BFFF" height="100" width="100" />
           </div>
-        </div>
-      </AppContext.Provider>
+        ) : (
+          <React.Fragment>
+            <LoginModal
+              showLoginModal={showLoginModal}
+              toggleModal={toggleModal}
+            />
+            <Header user={user} toggleModal={toggleModal} />
+            <Route exact path="/" component={MoviesPage} />
+            <Route path="/movie/:id" component={MoviePage} />
+          </React.Fragment>
+        )}
+      </BrowserRouter>
     );
   }
 }

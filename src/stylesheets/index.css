@@ -6,7 +6,71 @@ body {
   display: block;
 }
 
-.card-img--height {
-  max-height: 161.84px;
-  object-fit: cover;
+.card-title {
+  color: #000000;
+}
+
+.movie-container {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  background-color: rgba(40, 40, 40, 0.7);
+  height: 580px;
+}
+
+.movie-page {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  align-items: center;
+  width: 1000px;
+}
+
+.movie-image {
+  z-index: 100;
+}
+
+.movie-tab {
+  color: black;
+  padding: 11px;
+}
+
+.movie-tab.active {
+  line-height: 100%;
+  outline: #e9ecef solid 1px;
+}
+
+.movie-text {
+  z-index: 100;
+  color: white;
+}
+
+.movie-icons {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.icon-style {
+  position: relative;
+  width: 40px;
+  height: 40px;
+}
+.icon-style svg {
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(50%);
+  width: 40px !important;
+  height: 40px !important;
+  padding: 10px 0;
+  border: 2px solid;
+  border-radius: 50%;
+}
+
+.loader {
+  margin: 0 auto;
+  position: absolute;
+  top: 42%;
+  left: 45%;
 }
