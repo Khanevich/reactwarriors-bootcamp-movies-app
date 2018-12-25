@@ -2,128 +2,133 @@ import React from "react";
 import CallApi from "../../../api/api";
 import Field from "./Field/Field";
 import AppContextHOC from "../../HOC/AppContextHOC";
+import { inject, observer } from "mobx-react";
+import Store from "../../../store/store";
 
+@inject(({ store: movieStore }) => ({
+  username: movieStore.username,
+  password: movieStore.password,
+  repeatPassword: movieStore.repeatPassword,
+  errors: movieStore.errors,
+  submitting: movieStore.submitting,
+  // onChangeInfo: movieStore.onChangeInfo,
+  onChange: movieStore.update,
+  // handleBlur: movieStore.handleBlur,
+  // validateFields: movieStore.validateFields,
+  // onSubmit: movieStore.onSubmit,
+  // onLogin: movieStore.onLogin,
+  onSubmit: movieStore.submit,
+  onBlur: movieStore.validate
+  // onLogin: movieStore.
+}))
+@observer
+@AppContextHOC
 class LoginForm extends React.Component {
-  constructor() {
-    super();
-    // this.state = {
-    //   username: "",
-    //   password: "",
-    //   repeatPassword: "",
-    //   errors: {
-    //     username: false,
-    //     password: false,
-    //     repeatPassword: false,
-    //     base: false
-    //   },
-    //   submitting: false
-    // };
-  }
+  // onChangeInfo = event => {
+  //   const name = event.target.name;
+  //   const value = event.target.value;
+  //   this.setState(prevState => ({
+  //     [name]: value,
+  //     errors: {
+  //       ...prevState.errors,
+  //       [name]: null,
+  //       base: null
+  //     }
+  //   }));
+  // };
 
-  onChangeInfo = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState(prevState => ({
-      [name]: value,
-      errors: {
-        ...prevState.errors,
-        [name]: null,
-        base: null
-      }
-    }));
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.props.onChange(name, value);
   };
 
   handleBlur = () => {
-    console.log("on blur");
-    const errors = this.validateFields();
-    if (Object.keys(errors).length > 0) {
-      this.setState({
-        errors: {
-          ...this.state.errors,
-          ...errors
-        }
-      });
-    }
+    this.props.onBlur();
   };
+  //
+  // validateFields = event => {
+  //   const { username, password, repeatPassword } = this.state;
+  //   const errors = {};
+  //   if (username !== null && username.length < 5) {
+  //     errors.username = "Username is too short";
+  //   }
+  //
+  //   if (password !== null && password.length < 5) {
+  //     errors.password = "Password is too short";
+  //   }
+  //   if (repeatPassword !== null && repeatPassword !== password) {
+  //     errors.repeatPassword = "Passwords must be the same";
+  //   }
+  //   return errors;
+  // };
+  //
+  // onSubmit = () => {
+  //   this.setState({
+  //     submitting: true
+  //   });
+  //   CallApi.get("/authentication/token/new")
+  //     .then(data => {
+  //       return CallApi.post("/authentication/token/validate_with_login", {
+  //         body: {
+  //           username: this.state.username,
+  //           password: this.state.password,
+  //           request_token: data.request_token
+  //         }
+  //       });
+  //     })
+  //     .then(data => {
+  //       return CallApi.post("/authentication/session/new", {
+  //         body: {
+  //           request_token: data.request_token
+  //         }
+  //       });
+  //     })
+  //     .then(data => {
+  //       this.props.updateSessionId(data.session_id);
+  //       return CallApi.get("/account", {
+  //         params: {
+  //           session_id: data.session_id
+  //         }
+  //       });
+  //     })
+  //     .then(user => {
+  //       this.props.updateUser(user);
+  //       this.setState({
+  //         submitting: false
+  //       });
+  //       this.props.toggleModal();
+  //       console.log(user);
+  //     })
+  //     .catch(error => {
+  //       console.log("error", error);
+  //       this.setState({
+  //         submitting: false,
+  //         errors: {
+  //           base: error.status_message
+  //         }
+  //       });
+  //     });
+  // };
 
-  validateFields = event => {
-    const { username, password, repeatPassword } = this.state;
-    const errors = {};
-    if (username !== null && username.length < 5) {
-      errors.username = "Username is too short";
-    }
-
-    if (password !== null && password.length < 5) {
-      errors.password = "Password is too short";
-    }
-    if (repeatPassword !== null && repeatPassword !== password) {
-      errors.repeatPassword = "Passwords must be the same";
-    }
-    return errors;
-  };
-
-  onSubmit = () => {
-    this.setState({
-      submitting: true
-    });
-    CallApi.get("/authentication/token/new")
-      .then(data => {
-        return CallApi.post("/authentication/token/validate_with_login", {
-          body: {
-            username: this.state.username,
-            password: this.state.password,
-            request_token: data.request_token
-          }
-        });
-      })
-      .then(data => {
-        return CallApi.post("/authentication/session/new", {
-          body: {
-            request_token: data.request_token
-          }
-        });
-      })
-      .then(data => {
-        this.props.updateSessionId(data.session_id);
-        return CallApi.get("/account", {
-          params: {
-            session_id: data.session_id
-          }
-        });
-      })
-      .then(user => {
-        this.props.updateUser(user);
-        this.setState({
-          submitting: false
-        });
-        this.props.toggleModal();
-        console.log(user);
-      })
-      .catch(error => {
-        console.log("error", error);
-        this.setState({
-          submitting: false,
-          errors: {
-            base: error.status_message
-          }
-        });
-      });
-  };
-
-  onLogin = event => {
+  handleSubmit = event => {
     event.preventDefault();
-    const errors = this.validateFields();
-    if (Object.keys(errors).length > 0) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          ...errors
-        }
-      }));
-    } else {
-      this.onSubmit();
-    }
+    this.props.onSubmit({
+      updateSessionId: this.props.updateSessionId,
+      updateUser: this.props.updateUser
+    });
   };
+
+  //   const errors = this.validateFields();
+  //   if (Object.keys(errors).length > 0) {
+  //     this.setState(prevState => ({
+  //       errors: {
+  //         ...prevState.errors,
+  //         ...errors
+  //       }
+  //     }));
+  //   } else {
+  //     this.onSubmit();
+  //   }
 
   render() {
     const {
@@ -131,8 +136,13 @@ class LoginForm extends React.Component {
       password,
       repeatPassword,
       errors,
-      submitting
-    } = this.state;
+      submitting,
+      onChangeInfo
+      // handleBlur,
+      // validateFields,
+      // onSubmit,
+      // onLogin
+    } = this.props;
     return (
       <div className="form-login-container">
         <form className="form-login">
@@ -146,7 +156,7 @@ class LoginForm extends React.Component {
             placeholder="Enter your name"
             name="username"
             value={username || ""}
-            onChange={this.onChangeInfo}
+            onChange={this.handleChange}
             onBlur={this.handleBlur}
             error={errors.username}
           />
@@ -157,7 +167,7 @@ class LoginForm extends React.Component {
             placeholder="Enter password"
             name="password"
             value={password || ""}
-            onChange={this.onChangeInfo}
+            onChange={this.handleChange}
             onBlur={this.handleBlur}
             error={errors.password}
           />
@@ -168,14 +178,14 @@ class LoginForm extends React.Component {
             placeholder="Repeat password"
             name="repeatPassword"
             value={repeatPassword || ""}
-            onChange={this.onChangeInfo}
+            onChange={this.handleChange}
             onBlur={this.handleBlur}
             error={errors.repeatPassword}
           />
           <button
             type="submit"
             className="btn btn-lg btn-primary btn-block"
-            onClick={this.onLogin}
+            onClick={this.handleSubmit}
             disabled={submitting}
           >
             Вход
@@ -189,4 +199,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default AppContextHOC(LoginForm);
+export default LoginForm;
