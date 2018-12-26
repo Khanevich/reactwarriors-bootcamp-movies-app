@@ -18,7 +18,6 @@ const cookies = new Cookies();
 
 export const AppContext = React.createContext();
 
-@observer
 export default class App extends React.Component {
   constructor() {
     super();

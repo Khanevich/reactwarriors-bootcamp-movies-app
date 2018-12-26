@@ -6,18 +6,18 @@ import AppContextHOC from "../../HOC/AppContextHOC";
 class LoginForm extends React.Component {
   constructor() {
     super();
-    // this.state = {
-    //   username: "",
-    //   password: "",
-    //   repeatPassword: "",
-    //   errors: {
-    //     username: false,
-    //     password: false,
-    //     repeatPassword: false,
-    //     base: false
-    //   },
-    //   submitting: false
-    // };
+    this.state = {
+      username: "",
+      password: "",
+      repeatPassword: "",
+      errors: {
+        username: false,
+        password: false,
+        repeatPassword: false,
+        base: false
+      },
+      submitting: false
+    };
   }
 
   onChangeInfo = event => {
