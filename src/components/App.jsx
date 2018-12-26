@@ -27,7 +27,7 @@ export default class App extends React.Component {
       showLoginModal: false,
       favoriteMovies: [],
       watchList: [],
-      isLoading: false
+      isLoading: true
     };
   }
 
@@ -115,7 +115,7 @@ export default class App extends React.Component {
 
   componentDidMount() {
     this.setState({
-      isLoading: false
+      isLoading: true
     });
     const session_id = cookies.get("session_id");
     if (session_id) {

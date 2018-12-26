@@ -2,76 +2,29 @@ import React from "react";
 import CallApi from "../../../api/api";
 import Field from "./Field/Field";
 import AppContextHOC from "../../HOC/AppContextHOC";
+import Store from "../../../store/store";
+import { inject, observer } from "mobx-react";
 
+@inject(({ store }) => ({
+  values: store.values,
+  errors: store.errors,
+  submitting: store.submitting,
+  onChangeInfo: store.onChangeInfo,
+  validateFields: store.validateFields,
+  handleBlur: store.handleBlur,
+  onChangeSubmitting: store.onChangeSubmitting,
+  onChangeErrors: store.onChangeErrors
+}))
+@observer
 class LoginForm extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      username: "",
-      password: "",
-      repeatPassword: "",
-      errors: {
-        username: false,
-        password: false,
-        repeatPassword: false,
-        base: false
-      },
-      submitting: false
-    };
-  }
-
-  onChangeInfo = event => {
-    const name = event.target.name;
-    const value = event.target.value;
-    this.setState(prevState => ({
-      [name]: value,
-      errors: {
-        ...prevState.errors,
-        [name]: null,
-        base: null
-      }
-    }));
-  };
-
-  handleBlur = () => {
-    console.log("on blur");
-    const errors = this.validateFields();
-    if (Object.keys(errors).length > 0) {
-      this.setState({
-        errors: {
-          ...this.state.errors,
-          ...errors
-        }
-      });
-    }
-  };
-
-  validateFields = event => {
-    const { username, password, repeatPassword } = this.state;
-    const errors = {};
-    if (username !== null && username.length < 5) {
-      errors.username = "Username is too short";
-    }
-
-    if (password !== null && password.length < 5) {
-      errors.password = "Password is too short";
-    }
-    if (repeatPassword !== null && repeatPassword !== password) {
-      errors.repeatPassword = "Passwords must be the same";
-    }
-    return errors;
-  };
-
   onSubmit = () => {
-    this.setState({
-      submitting: true
-    });
+    this.props.onChangeSubmitting(true);
     CallApi.get("/authentication/token/new")
       .then(data => {
         return CallApi.post("/authentication/token/validate_with_login", {
           body: {
-            username: this.state.username,
-            password: this.state.password,
+            username: this.props.values.username,
+            password: this.props.values.password,
             request_token: data.request_token
           }
         });
@@ -93,46 +46,43 @@ class LoginForm extends React.Component {
       })
       .then(user => {
         this.props.updateUser(user);
-        this.setState({
-          submitting: false
-        });
+        this.props.onChangeSubmitting(false);
         this.props.toggleModal();
-        console.log(user);
       })
       .catch(error => {
         console.log("error", error);
-        this.setState({
-          submitting: false,
-          errors: {
-            base: error.status_message
-          }
-        });
+        // this.setState({
+        //   submitting: false,
+        //   errors: {
+        //     base: error.status_message
+        //   }
+        // });
+        // this.props.submitting = false;
+        this.props.onChangeSubmitting(false);
+        this.props.errors.base = error.status_message;
       });
   };
 
   onLogin = event => {
     event.preventDefault();
-    const errors = this.validateFields();
+
+    const errors = this.props.validateFields();
     if (Object.keys(errors).length > 0) {
-      this.setState(prevState => ({
-        errors: {
-          ...prevState.errors,
-          ...errors
-        }
-      }));
+      // this.setState(prevState => ({
+      //   errors: {
+      //     ...prevState.errors,
+      //     ...errors
+      //   }
+      // }));
+      // this.props.errors = errors;
+      this.props.onChangeErrors(errors);
     } else {
       this.onSubmit();
     }
   };
 
   render() {
-    const {
-      username,
-      password,
-      repeatPassword,
-      errors,
-      submitting
-    } = this.state;
+    const { values, errors, submitting, onChangeInfo, handleBlur } = this.props;
     return (
       <div className="form-login-container">
         <form className="form-login">
@@ -145,9 +95,9 @@ class LoginForm extends React.Component {
             id="username"
             placeholder="Enter your name"
             name="username"
-            value={username || ""}
-            onChange={this.onChangeInfo}
-            onBlur={this.handleBlur}
+            value={values.username || ""}
+            onChange={onChangeInfo}
+            onBlur={handleBlur}
             error={errors.username}
           />
           <Field
@@ -156,9 +106,9 @@ class LoginForm extends React.Component {
             id="password"
             placeholder="Enter password"
             name="password"
-            value={password || ""}
-            onChange={this.onChangeInfo}
-            onBlur={this.handleBlur}
+            value={values.password || ""}
+            onChange={onChangeInfo}
+            onBlur={handleBlur}
             error={errors.password}
           />
           <Field
@@ -167,9 +117,9 @@ class LoginForm extends React.Component {
             id="repeatPassword"
             placeholder="Repeat password"
             name="repeatPassword"
-            value={repeatPassword || ""}
-            onChange={this.onChangeInfo}
-            onBlur={this.handleBlur}
+            value={values.repeatPassword || ""}
+            onChange={onChangeInfo}
+            onBlur={handleBlur}
             error={errors.repeatPassword}
           />
           <button
