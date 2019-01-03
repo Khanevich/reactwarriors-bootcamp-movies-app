@@ -3,7 +3,7 @@ import { API_URL, API_KEY_3, fetchApi } from "../../api/api";
 import _ from "lodash";
 
 export default (Component, type) =>
-  class AddFavoriteHOC extends React.PureComponent {
+  class AddFavoriteHOC extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
@@ -14,8 +14,9 @@ export default (Component, type) =>
       };
     }
 
-    getAddById = ({ list, id }) => list.some(item => item.id === id);
-
+    getAddById = ({ list, id }) => {
+      list.some(item => item.id === id);
+    };
     onAddFavorites = name => () => {
       const { user, session_id, item, toggleModal } = this.props;
       if (session_id == null) {
@@ -67,6 +68,7 @@ export default (Component, type) =>
     }
 
     render() {
+      console.log("ICONHOC");
       const { isAdded } = this.state;
       return (
         <Component isAdded={isAdded} onAddFavorites={this.onAddFavorites} />

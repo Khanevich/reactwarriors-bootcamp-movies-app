@@ -10,7 +10,6 @@ import { fas } from "@fortawesome/free-solid-svg-icons";
 import { far } from "@fortawesome/free-regular-svg-icons";
 import { BrowserRouter, Route } from "react-router-dom";
 import Loader from "react-loader-spinner";
-
 import { inject, observer } from "mobx-react";
 
 library.add(fas, far);
@@ -19,17 +18,20 @@ const cookies = new Cookies();
 export const AppContext = React.createContext();
 
 @inject(({ userStore }) => ({
-  getFavoriteMovies: userStore.getFavoriteMovies,
+  check: userStore.check,
+  user: userStore.user,
+  session_id: userStore.session_id,
+  showLoginModal: userStore.showLoginModal,
+  favoriteMovies: userStore.favoriteMovies,
+  watchList: userStore.showLoginModal,
+  isLoading: userStore.isLoading,
   isAuth: userStore.isAuth,
+  getFavoriteMovies: userStore.getFavoriteMovies,
+  toggleModal: userStore.toggleModal,
   logOut: userStore.logOut,
   updateUser: userStore.updateUser,
-  updateSessionId: userStore.updateSessionId,
-  isLoading: userStore.isLoading,
-  session_id: userStore.session_id,
-  user: userStore.user,
   updateAuth: userStore.updateAuth,
-  showLoginModal: userStore.showLoginModal,
-  toggleModal: userStore.toggleModal,
+  updateSessionId: userStore.updateSessionId,
   userStore: userStore
 }))
 @observer
@@ -56,21 +58,24 @@ class App extends React.Component {
   // }
 
   render() {
+    console.log("LOL", this.props.favoriteMovies);
     return (
       <BrowserRouter>
         <AppContext.Provider
           value={{
             user: this.props.user,
             session_id: this.props.session_id,
-            updateSessionId: this.props.updateSessionId,
-            updateUser: this.props.updateUser,
-            toggleModal: this.props.toggleModal,
             showLoginModal: this.props.showLoginModal,
-            logOut: this.props.logOut,
-            getFavoriteMovies: this.props.getFavoriteMovies,
             favoriteMovies: this.props.favoriteMovies,
             watchList: this.props.watchList,
-            isAuth: this.props.isAuth
+            isLoading: this.props.isLoading,
+            isAuth: this.props.isAuth,
+            getFavoriteMovies: this.props.getFavoriteMovies,
+            toggleModal: this.props.toggleModal,
+            logOut: this.props.logOut,
+            updateUser: this.props.updateUser,
+            updateAuth: this.props.updateAuth,
+            updateSessionId: this.props.updateSessionId
           }}
         >
           {this.props.isLoading ? (
