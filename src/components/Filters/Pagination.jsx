@@ -2,19 +2,16 @@ import React from "react";
 import AppContextHOC from "../HOC/AppContextHOC";
 
 class Pagination extends React.PureComponent {
-
   pageDecrement = () => {
-    this.props.onChangePage(this.props.page - 1)
-  }
+    this.props.onChangePage(this.props.page - 1);
+  };
 
   pageIncrement = () => {
-    console.log("increment")
-    this.props.onChangePage(this.props.page + 1)
-  }
+    this.props.onChangePage(this.props.page + 1);
+  };
 
   render() {
     const { page, total_pages } = this.props;
-    console.log("pagination");
     return (
       <React.Fragment>
         <div className="btn-group d-flex justify-content-center">
@@ -22,7 +19,7 @@ class Pagination extends React.PureComponent {
             type="button"
             className="btn btn-light"
             disabled={page === 1}
-            onClick={this.pageDecrement}  
+            onClick={this.pageDecrement}
           >
             Назад
           </button>

@@ -2,7 +2,6 @@ import React from "react";
 import CallApi from "../../../api/api";
 import Field from "./Field/Field";
 import AppContextHOC from "../../HOC/AppContextHOC";
-import Store from "../../../store/store";
 import { inject, observer } from "mobx-react";
 
 @inject(({ store }) => ({
@@ -12,77 +11,70 @@ import { inject, observer } from "mobx-react";
   onChangeInfo: store.onChangeInfo,
   validateFields: store.validateFields,
   handleBlur: store.handleBlur,
-  onChangeSubmitting: store.onChangeSubmitting,
-  onChangeErrors: store.onChangeErrors
+  onChangeErrors: store.onChangeErrors,
+  onSubmit: store.onSubmit,
+  onLogin: store.onLogin,
+  store: store
 }))
 @observer
 class LoginForm extends React.Component {
-  onSubmit = () => {
-    this.props.onChangeSubmitting(true);
-    CallApi.get("/authentication/token/new")
-      .then(data => {
-        return CallApi.post("/authentication/token/validate_with_login", {
-          body: {
-            username: this.props.values.username,
-            password: this.props.values.password,
-            request_token: data.request_token
-          }
-        });
-      })
-      .then(data => {
-        return CallApi.post("/authentication/session/new", {
-          body: {
-            request_token: data.request_token
-          }
-        });
-      })
-      .then(data => {
-        this.props.updateSessionId(data.session_id);
-        return CallApi.get("/account", {
-          params: {
-            session_id: data.session_id
-          }
-        });
-      })
-      .then(user => {
-        this.props.updateUser(user);
-        this.props.onChangeSubmitting(false);
-        this.props.toggleModal();
-      })
-      .catch(error => {
-        console.log("error", error);
-        // this.setState({
-        //   submitting: false,
-        //   errors: {
-        //     base: error.status_message
-        //   }
-        // });
-        // this.props.submitting = false;
-        this.props.onChangeSubmitting(false);
-        this.props.errors.base = error.status_message;
-      });
-  };
+  // onSubmit = () => {
+  //   this.props.store.submitting = true;
+  //   CallApi.get("/authentication/token/new")
+  //     .then(data => {
+  //       return CallApi.post("/authentication/token/validate_with_login", {
+  //         body: {
+  //           username: this.props.values.username,
+  //           password: this.props.values.password,
+  //           request_token: data.request_token
+  //         }
+  //       });
+  //     })
+  //     .then(data => {
+  //       return CallApi.post("/authentication/session/new", {
+  //         body: {
+  //           request_token: data.request_token
+  //         }
+  //       });
+  //     })
+  //     .then(data => {
+  //       this.props.updateSessionId(data.session_id);
+  //       return CallApi.get("/account", {
+  //         params: {
+  //           session_id: data.session_id
+  //         }
+  //       });
+  //     })
+  //     .then(user => {
+  //       this.props.updateUser(user);
+  //       this.props.store.submitting = false;
+  //       this.props.toggleModal();
+  //     })
+  //     .catch(error => {
+  //       this.props.store.submitting = false;
+  //       this.props.errors.base = error.status_message;
+  //     });
+  // };
 
-  onLogin = event => {
-    event.preventDefault();
-
-    const errors = this.props.validateFields();
-    if (Object.keys(errors).length > 0) {
-      // this.setState(prevState => ({
-      //   errors: {
-      //     ...prevState.errors,
-      //     ...errors
-      //   }
-      // }));
-      // this.props.errors = errors;
-      this.props.onChangeErrors(errors);
-    } else {
-      this.onSubmit();
-    }
-  };
+  // onLogin = event => {
+  //   event.preventDefault();
+  //   const errors = this.props.validateFields();
+  //   if (Object.keys(errors).length > 0) {
+  //     this.props.onChangeErrors(errors);
+  //   } else {
+  //     this.onSubmit();
+  //   }
+  // };
 
   render() {
-    const { values, errors, submitting, onChangeInfo, handleBlur } = this.props;
+    const {
+      values,
+      errors,
+      submitting,
+      onChangeInfo,
+      handleBlur,
+      onLogin
+    } = this.props;
     return (
       <div className="form-login-container">
         <form className="form-login">
@@ -125,7 +117,7 @@ class LoginForm extends React.Component {
           <button
             type="submit"
             className="btn btn-lg btn-primary btn-block"
-            onClick={this.onLogin}
+            onClick={this.props.onLogin}
             disabled={submitting}
           >
             Вход

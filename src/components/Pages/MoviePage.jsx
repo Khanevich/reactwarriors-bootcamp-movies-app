@@ -5,10 +5,8 @@ import MovieCredits from "../Movies/Tabs/MovieCredits";
 import MovieInfo from "../Movies/MovieInfo";
 import MovieTabs from "../Movies/MovieTabs";
 import CallApi from "../../api/api";
-import classnames from "classnames";
 import { Route, Switch } from "react-router-dom";
 import Loader from "react-loader-spinner";
-
 
 class MoviePage extends React.Component {
   constructor() {
@@ -16,7 +14,6 @@ class MoviePage extends React.Component {
     this.state = {
       movieInfo: {},
       isLoading: false
-
     };
   }
 
@@ -24,7 +21,6 @@ class MoviePage extends React.Component {
     this.setState({
       isLoading: true
     });
-    console.log("Component mount");
     CallApi.get(`/movie/${this.props.match.params.id}`, {
       params: {
         language: "ru-RU"
@@ -34,23 +30,17 @@ class MoviePage extends React.Component {
         movieInfo: data,
         isLoading: false
       });
-    })
+    });
   }
   render() {
     const { movieInfo, isLoading } = this.state;
     return (
       <div className="container-fluid">
-
         {isLoading ? (
           <div className="loader">
-          <Loader
-         type="Puff"
-         color="#00BFFF"
-         height="100"
-         width="100"
-      />
-         </div>
-     ) : (
+            <Loader type="Puff" color="#00BFFF" height="100" width="100" />
+          </div>
+        ) : (
           <React.Fragment>
             <MovieInfo movieInfo={movieInfo} />
             <MovieTabs movieInfo={movieInfo} />

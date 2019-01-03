@@ -1,4 +1,6 @@
 import { observable, action } from "mobx";
+import CallApi, { API_URL, API_KEY_3, fetchApi } from "../api/api";
+import { userStore } from "./userStore";
 
 export default class Store {
   @observable
@@ -24,7 +26,8 @@ export default class Store {
     const name = event.target.name;
     const value = event.target.value;
     this.values[name] = value;
-    this.errors[name] = null;
+
+    // this.errors[name] = null;
   };
 
   @action
@@ -54,14 +57,58 @@ export default class Store {
   };
 
   @action
-  onChangeSubmitting = nos => {
-    console.log("submitted");
-    this.submitting = nos;
+  onChangeErrors = err => {
+    this.errors = err;
   };
 
   @action
-  onChangeErrors = err => {
-    this.errors = err;
+  onSubmit = () => {
+    this.submitting = true;
+    CallApi.get("/authentication/token/new")
+      .then(data => {
+        return CallApi.post("/authentication/token/validate_with_login", {
+          body: {
+            username: this.values.username,
+            password: this.values.password,
+            request_token: data.request_token
+          }
+        });
+      })
+      .then(data => {
+        return CallApi.post("/authentication/session/new", {
+          body: {
+            request_token: data.request_token
+          }
+        });
+      })
+      .then(data => {
+        userStore.updateSessionId(data.session_id);
+        return CallApi.get("/account", {
+          params: {
+            session_id: data.session_id
+          }
+        });
+      })
+      .then(user => {
+        userStore.updateUser(user);
+        this.submitting = false;
+        userStore.toggleModal();
+      })
+      .catch(error => {
+        this.submitting = false;
+        this.errors.base = error.status_message;
+      });
+  };
+
+  @action
+  onLogin = event => {
+    event.preventDefault();
+    const errors = this.validateFields();
+    if (Object.keys(errors).length > 0) {
+      this.onChangeErrors(errors);
+    } else {
+      this.onSubmit();
+    }
   };
 }
 

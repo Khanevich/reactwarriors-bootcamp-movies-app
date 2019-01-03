@@ -29,7 +29,6 @@ export default class MoviesPage extends React.Component {
   };
 
   onChangePage = page => {
-    console.log(page);
     this.setState({
       page
     });

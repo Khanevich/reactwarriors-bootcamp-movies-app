@@ -67,7 +67,6 @@ export default (Component, type) =>
     }
 
     render() {
-      console.log("ICONHOC");
       const { isAdded } = this.state;
       return (
         <Component isAdded={isAdded} onAddFavorites={this.onAddFavorites} />
