@@ -3,13 +3,15 @@ import User from "./User";
 import { Link } from "react-router-dom";
 import { inject, observer } from "mobx-react";
 
-@inject(({ userStore }) => ({
-  isAuth: userStore.isAuth
+@inject(({ loginFormStore, userStore }) => ({
+  loginFormStore,
+  userStore
 }))
 @observer
 class Header extends React.Component {
   render() {
-    const { toggleModal, isAuth } = this.props;
+    const { toggleModal } = this.props.loginFormStore;
+    const { isAuth } = this.props.userStore;
     return (
       <nav className="navbar navbar-dark bg-primary">
         <div className="container">

@@ -1,58 +1,73 @@
 import React from "react";
 import Filters from "../Filters/Filters";
 import MoviesList from "../Movies/MoviesList";
+import { inject, observer } from "mobx-react";
+
 export const AppContext = React.createContext();
 
-export default class MoviesPage extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: "2018",
-        with_genres: []
-      },
-      page: 1,
-      total_pages: ""
-    };
-  }
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class MoviesPage extends React.Component {
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     filters: {
+  //       sort_by: "popularity.desc",
+  //       primary_release_year: "2018",
+  //       with_genres: []
+  //     },
+  //     page: 1,
+  //     total_pages: ""
+  //   };
+  // }
 
-  onChangeFilters = event => {
-    const value = event.target.value;
-    const name = event.target.name;
-    this.setState(prevState => ({
-      filters: {
-        ...prevState.filters,
-        [name]: value
-      }
-    }));
-  };
+  // onChangeFilters = event => {
+  //   const value = event.target.value;
+  //   const name = event.target.name;
+  //   this.setState(prevState => ({
+  //     filters: {
+  //       ...prevState.filters,
+  //       [name]: value
+  //     }
+  //   }));
+  // };
 
-  onChangePage = page => {
-    this.setState({
-      page
-    });
-  };
+  // onChangePage = page => {
+  //   console.log(page);
+  //   this.setState({
+  //     page
+  //   });
+  // };
 
-  onClear = event => {
-    this.setState({
-      filters: {
-        sort_by: "popularity.desc",
-        primary_release_year: "2018",
-        with_genres: []
-      },
-      page: 1
-    });
-  };
+  // onClear = event => {
+  //   this.setState({
+  //     filters: {
+  //       sort_by: "popularity.desc",
+  //       primary_release_year: "2018",
+  //       with_genres: []
+  //     },
+  //     page: 1
+  //   });
+  // };
 
-  getTotalPages = total_pages => {
-    this.setState({
-      total_pages
-    });
-  };
+  // getTotalPages = total_pages => {
+  //   this.setState({
+  //     total_pages
+  //   });
+  // };
 
   render() {
-    const { filters, page, total_pages } = this.state;
+    const {
+      filters,
+      page,
+      total_pages,
+      onChangeFilters,
+      onChangePage,
+      onClear,
+      getTotalPages
+    } = this.props.moviesPageStore;
 
     return (
       <div className="container">
@@ -61,15 +76,15 @@ export default class MoviesPage extends React.Component {
             <div className="card" style={{ width: "100%" }}>
               <div className="card-body">
                 <h3>Фильтры:</h3>
-                <button className="btn btn-light" onClick={this.onClear}>
+                <button className="btn btn-light" onClick={onClear}>
                   Отчистить
                 </button>
                 <Filters
                   page={page}
                   total_pages={total_pages}
                   filters={filters}
-                  onChangeFilters={this.onChangeFilters}
-                  onChangePage={this.onChangePage}
+                  onChangeFilters={onChangeFilters}
+                  onChangePage={onChangePage}
                 />
               </div>
             </div>
@@ -78,9 +93,9 @@ export default class MoviesPage extends React.Component {
             <MoviesList
               filters={filters}
               page={page}
-              onChangePage={this.onChangePage}
-              getTotalPages={this.getTotalPages}
-              onChangeFilters={this.onChangeFilters}
+              onChangePage={onChangePage}
+              getTotalPages={getTotalPages}
+              onChangeFilters={onChangeFilters}
             />
           </div>
         </div>
@@ -88,3 +103,5 @@ export default class MoviesPage extends React.Component {
     );
   }
 }
+
+export default MoviesPage;

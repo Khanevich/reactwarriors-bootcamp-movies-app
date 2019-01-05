@@ -4,22 +4,13 @@ import Field from "./Field/Field";
 import AppContextHOC from "../../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
 
-@inject(({ store }) => ({
-  values: store.values,
-  errors: store.errors,
-  submitting: store.submitting,
-  onChangeInfo: store.onChangeInfo,
-  validateFields: store.validateFields,
-  handleBlur: store.handleBlur,
-  onChangeErrors: store.onChangeErrors,
-  onSubmit: store.onSubmit,
-  onLogin: store.onLogin,
-  store: store
+@inject(({ loginFormStore }) => ({
+  loginFormStore
 }))
 @observer
 class LoginForm extends React.Component {
   // onSubmit = () => {
-  //   this.props.store.submitting = true;
+  //   this.props.onChangeSubmitting(true);
   //   CallApi.get("/authentication/token/new")
   //     .then(data => {
   //       return CallApi.post("/authentication/token/validate_with_login", {
@@ -47,24 +38,40 @@ class LoginForm extends React.Component {
   //     })
   //     .then(user => {
   //       this.props.updateUser(user);
-  //       this.props.store.submitting = false;
+  //       this.props.onChangeSubmitting(false);
   //       this.props.toggleModal();
   //     })
   //     .catch(error => {
-  //       this.props.store.submitting = false;
+  //       console.log("error", error);
+  //       // this.setState({
+  //       //   submitting: false,
+  //       //   errors: {
+  //       //     base: error.status_message
+  //       //   }
+  //       // });
+  //       // this.props.submitting = false;
+  //       this.props.onChangeSubmitting(false);
   //       this.props.errors.base = error.status_message;
   //     });
   // };
 
-  // onLogin = event => {
-  //   event.preventDefault();
-  //   const errors = this.props.validateFields();
-  //   if (Object.keys(errors).length > 0) {
-  //     this.props.onChangeErrors(errors);
-  //   } else {
-  //     this.onSubmit();
-  //   }
-  // };
+  onLogin = event => {
+    event.preventDefault();
+
+    const errors = this.props.loginFormStore.validateFields();
+    if (Object.keys(errors).length > 0) {
+      // this.setState(prevState => ({
+      //   errors: {
+      //     ...prevState.errors,
+      //     ...errors
+      //   }
+      // }));
+      // this.props.errors = errors;
+      this.props.loginFormStore.onChangeErrors(errors);
+    } else {
+      this.props.loginFormStore.onSubmit();
+    }
+  };
 
   render() {
     const {
@@ -72,9 +79,8 @@ class LoginForm extends React.Component {
       errors,
       submitting,
       onChangeInfo,
-      handleBlur,
-      onLogin
-    } = this.props;
+      handleBlur
+    } = this.props.loginFormStore;
     return (
       <div className="form-login-container">
         <form className="form-login">
