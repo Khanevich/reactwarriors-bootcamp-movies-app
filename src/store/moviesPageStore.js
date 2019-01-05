@@ -1,16 +1,31 @@
-import { observable, action } from "mobx";
+import { observable, action, reaction, values } from "mobx";
+import CallApi from "../api/api";
 
-export default class MoviesPageStore {
+const initialFilter = {
+  sort_by: "popularity.desc",
+  primary_release_year: "2018",
+  with_genres: []
+};
+class MoviesPageStore {
+  constructor() {
+    reaction(
+      () => values(this.filters),
+      () => {
+        this.onChangePage(1);
+        this.getMovies();
+      }
+    );
+    reaction(() => this.page, () => this.getMovies());
+  }
   @observable
-  filters = {
-    sort_by: "popularity.desc",
-    primary_release_year: "2018",
-    with_genres: []
-  };
+  filters = initialFilter;
   @observable
   page = 1;
   @observable
   total_pages = "";
+
+  @observable
+  movies = [];
 
   @action
   onChangeFilters = event => {
@@ -37,19 +52,9 @@ export default class MoviesPageStore {
 
   @action
   onClear = event => {
-    // this.setState({
-    //   filters: {
-    //     sort_by: "popularity.desc",
-    //     primary_release_year: "2018",
-    //     with_genres: []
-    //   },
-    //   page: 1
-    // });
-    this.filters = {
-      sort_by: "popularity.desc",
-      primary_release_year: "2018",
-      with_genres: []
-    };
+    for (let key in initialFilter) {
+      this.filters[key] = initialFilter[key];
+    }
   };
 
   @action
@@ -58,6 +63,31 @@ export default class MoviesPageStore {
     //   total_pages
     // });
     this.total_pages = total_pages;
+  };
+
+  @action
+  getMovies = (filters = this.filters, page = this.page) => {
+    const { sort_by, primary_release_year, with_genres } = this.filters;
+    const queryStringParams = {
+      language: "ru-RU",
+      sort_by: sort_by,
+      page: page,
+      primary_release_year: primary_release_year
+    };
+
+    if (with_genres.length > 0) {
+      queryStringParams.with_genres = with_genres.join(",");
+    }
+
+    CallApi.get("/discover/movie", {
+      params: queryStringParams
+    }).then(data => {
+      // this.setState({
+      //   movies: data.results
+      // });
+      this.movies = data.results;
+      this.getTotalPages(data.total_pages);
+    });
   };
 }
 

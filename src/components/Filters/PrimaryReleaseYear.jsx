@@ -1,7 +1,12 @@
 import React from "react";
 import UISelector from "../UIComponents/UISelector";
+import { inject, observer } from "mobx-react";
 
-export default class PrimaryReleaseYear extends React.PureComponent {
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class PrimaryReleaseYear extends React.Component {
   static defaultProps = {
     options: [
       {
@@ -24,16 +29,22 @@ export default class PrimaryReleaseYear extends React.PureComponent {
   };
 
   render() {
-    const { primary_release_year, onChangeFilters, options } = this.props;
+    const {
+      filters: { primary_release_year },
+      onChangeFilters
+    } = this.props.moviesPageStore;
+
     return (
       <UISelector
         id="primary_release_year"
         name="primary_release_year"
         value={primary_release_year}
         onChange={onChangeFilters}
-        options={options}
+        options={this.props.options}
         labelText="Год резила:"
       />
     );
   }
 }
+
+export default PrimaryReleaseYear;

@@ -1,13 +1,13 @@
 import { observable, action } from "mobx";
 import { userStore } from "./userStore";
-import CallApi, { API_URL, API_KEY_3, fetchApi } from "../api/api";
+import CallApi from "../api/api";
 
-export default class LoginFormStore {
+class LoginFormStore {
   @observable
   values = {
-    username: null,
-    password: null,
-    repeatPassword: null
+    username: "StasKhanevich",
+    password: "terka2312",
+    repeatPassword: "terka2312"
   };
 
   @observable
@@ -70,7 +70,7 @@ export default class LoginFormStore {
   };
 
   onSubmit = () => {
-    let session_id = "";
+    let session_id = null;
     this.onChangeSubmitting(true);
     CallApi.get("/authentication/token/new")
       .then(data => {
@@ -90,7 +90,7 @@ export default class LoginFormStore {
         });
       })
       .then(data => {
-        let session_id = data.session_id;
+        session_id = data.session_id;
         return CallApi.get("/account", {
           params: {
             session_id: data.session_id

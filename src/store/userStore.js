@@ -3,7 +3,7 @@ import CallApi, { API_URL, API_KEY_3, fetchApi } from "../api/api";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
-export default class UserStore {
+class UserStore {
   @observable user = {};
   @observable session_id = null;
   @observable favoriteMovies = [];

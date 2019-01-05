@@ -64,10 +64,7 @@ class App extends React.Component {
               showLoginModal={this.props.loginFormStore.showLoginModal}
               toggleModal={this.props.loginFormStore.toggleModal}
             />
-            <Header
-              user={this.props.userStore.user}
-              toggleModal={this.props.loginFormStore.toggleModal}
-            />
+            <Header />
             <Route exact path="/" component={MoviesPage} />
             <Route path="/movie/:id" component={MoviePage} />
           </React.Fragment>
