@@ -38,6 +38,7 @@ class App extends React.Component {
 
   render() {
     const { isLoading } = this.props.userStore;
+    const { showLoginModal, toggleModal } = this.props.loginFormStore;
     return (
       <BrowserRouter>
         {isLoading ? (
@@ -47,8 +48,8 @@ class App extends React.Component {
         ) : (
           <React.Fragment>
             <LoginModal
-              showLoginModal={this.props.loginFormStore.showLoginModal}
-              toggleModal={this.props.loginFormStore.toggleModal}
+              showLoginModal={showLoginModal}
+              toggleModal={toggleModal}
             />
             <Header />
             <Route exact path="/" component={MoviesPage} />
