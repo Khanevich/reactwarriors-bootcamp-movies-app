@@ -1,6 +1,5 @@
 import React from "react";
 import UIIcon from "../UIComponents/UIIcon";
-import AppContextHOC from "../HOC/AppContextHOC";
 import AddFavoriteHOC from "../HOC/AddFavoriteHOC";
 
 const WatchList = ({ isAdded, onAddFavorites }) => {
@@ -13,4 +12,4 @@ const WatchList = ({ isAdded, onAddFavorites }) => {
   );
 };
 
-export default AppContextHOC(AddFavoriteHOC(WatchList, "watchList"));
+export default AddFavoriteHOC(WatchList, "watchList");

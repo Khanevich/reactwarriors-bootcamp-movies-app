@@ -1,6 +1,5 @@
 import React from "react";
 import Field from "./Field/Field";
-import AppContextHOC from "../../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
 
 @inject(({ loginFormStore }) => ({
@@ -69,7 +68,7 @@ class LoginForm extends React.Component {
           <button
             type="submit"
             className="btn btn-lg btn-primary btn-block"
-            onClick={this.props.onLogin}
+            onClick={this.onLogin}
             disabled={submitting}
           >
             Вход
@@ -83,4 +82,4 @@ class LoginForm extends React.Component {
   }
 }
 
-export default AppContextHOC(LoginForm);
+export default LoginForm;

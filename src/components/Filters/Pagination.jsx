@@ -1,5 +1,4 @@
 import React from "react";
-import AppContextHOC from "../HOC/AppContextHOC";
 import { inject, observer } from "mobx-react";
 
 @inject(({ moviesPageStore }) => ({
@@ -50,4 +49,4 @@ class Pagination extends React.Component {
   }
 }
 
-export default AppContextHOC(Pagination);
+export default Pagination;

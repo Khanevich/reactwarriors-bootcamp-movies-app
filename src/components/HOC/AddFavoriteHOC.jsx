@@ -1,14 +1,20 @@
 import React from "react";
 import { API_URL, API_KEY_3, fetchApi } from "../../api/api";
 import _ from "lodash";
+import { inject, observer } from "mobx-react";
 
 export default (Component, type) =>
+  @inject(({ userStore, loginFormStore }) => ({
+    userStore,
+    loginFormStore
+  }))
+  @observer
   class AddFavoriteHOC extends React.Component {
     constructor(props) {
       super(props);
       this.state = {
         isAdded: this.getAddById({
-          list: props[type],
+          list: props.userStore[type],
           id: props.item.id
         })
       };
@@ -17,8 +23,11 @@ export default (Component, type) =>
     getAddById = ({ list, id }) => {
       list.some(item => item.id === id);
     };
+
     onAddFavorites = name => () => {
-      const { user, session_id, item, toggleModal } = this.props;
+      const { item } = this.props;
+      const { user, session_id } = this.props.userStore;
+      const { toggleModal } = this.props.loginFormStore;
       if (session_id == null) {
         toggleModal();
       } else {
@@ -43,7 +52,7 @@ export default (Component, type) =>
                   [name]: this.state.isAdded
                 })
               }
-            ).then(() => this.props.getFavoriteMovies());
+            ).then(() => this.props.userStore.getFavoriteMovies());
           }
         );
       }

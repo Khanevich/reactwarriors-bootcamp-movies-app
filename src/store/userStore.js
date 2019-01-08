@@ -8,6 +8,7 @@ class UserStore {
   @observable session_id = null;
   @observable favoriteMovies = [];
   @observable watchList = [];
+  @observable isLoading = false;
 
   @computed get isAuth() {
     return Boolean(Object.keys(this.user).length);

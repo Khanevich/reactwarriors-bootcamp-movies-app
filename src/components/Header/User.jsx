@@ -1,5 +1,5 @@
 import React from "react";
-import AppContextHOC from "../HOC/AppContextHOC";
+
 import {
   UncontrolledDropdown,
   DropdownToggle,
@@ -35,4 +35,4 @@ class User extends React.Component {
   }
 }
 
-export default AppContextHOC(User);
+export default User;
