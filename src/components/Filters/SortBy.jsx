@@ -1,7 +1,12 @@
 import React from "react";
 import UISelector from "../UIComponents/UISelector";
+import { inject, observer } from "mobx-react";
 
-export default class SortBy extends React.PureComponent {
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class SortBy extends React.Component {
   static defaultProps = {
     options: [
       {
@@ -23,16 +28,17 @@ export default class SortBy extends React.PureComponent {
     ]
   };
   render() {
-    const { sort_by, onChangeFilters, options } = this.props;
     console.log("sort_by");
     return (
       <UISelector
         id="sort_by"
         name="sort_by"
-        value={sort_by}
-        onChange={onChangeFilters}
-        options={options}
+        value={this.props.moviesPageStore.filters.sort_by}
+        onChange={this.props.moviesPageStore.onChangeFilters}
+        options={this.props.options}
       />
     );
   }
 }
+
+export default SortBy;

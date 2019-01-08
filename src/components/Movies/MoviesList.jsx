@@ -1,28 +1,29 @@
 import React from "react";
 import MovieItem from "./MovieItem";
-import MoviesHOC from "../HOC/MoviesHOC";
-import PropTypes from "prop-types";
+import { inject, observer } from "mobx-react";
 
-const MoviesList = ({ movies, likedMovieID }) => {
-  return (
-    <div className="row">
-      {movies.map(movie => {
-        return (
-          <div key={movie.id} className="col-6 mb-4">
-            <MovieItem item={movie} likedMovieID={likedMovieID} />
-          </div>
-        );
-      })}
-    </div>
-  );
-};
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class MoviesList extends React.Component {
+  componentDidMount() {
+    this.props.moviesPageStore.getMovies();
+  }
+  render() {
+    const { movies } = this.props.moviesPageStore;
+    return (
+      <div className="row">
+        {movies.map(movie => {
+          return (
+            <div key={movie.id} className="col-6 mb-4">
+              <MovieItem item={movie} />
+            </div>
+          );
+        })}
+      </div>
+    );
+  }
+}
 
-MoviesList.defaultProps = {
-  movies: []
-};
-
-MoviesList.propTypes = {
-  movies: PropTypes.array.isRequired
-};
-
-export default MoviesHOC(MoviesList);
+export default MoviesList;

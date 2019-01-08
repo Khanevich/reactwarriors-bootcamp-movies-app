@@ -1,8 +1,13 @@
 import React from "react";
 import CallApi from "../../api/api";
 import Genres from "./Genres";
+import { inject, observer } from "mobx-react";
 
-export default class GenresContainer extends React.PureComponent {
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class GenresContainer extends React.Component {
   constructor() {
     super();
     this.state = {
@@ -20,31 +25,27 @@ export default class GenresContainer extends React.PureComponent {
         genresList: data.genres
       });
     });
-    // fetch(link)
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       genresList: data.genres
-    //     });
-    //   });
   }
 
   onChange = event => {
-    this.props.onChangeFilters({
+    this.props.moviesPageStore.onChangeFilters({
       target: {
         name: "with_genres",
         value: event.target.checked
-          ? [...this.props.with_genres, event.target.value]
-          : this.props.with_genres.filter(genre => genre !== event.target.value)
+          ? [
+              ...this.props.moviesPageStore.filters.with_genres,
+              event.target.value
+            ]
+          : this.props.moviesPageStore.filters.with_genres.filter(
+              genre => genre !== event.target.value
+            )
       }
     });
   };
 
   render() {
     const { genresList } = this.state;
-    const { with_genres } = this.props;
+    const { with_genres } = this.props.moviesPageStore.filters;
     return (
       <Genres
         genresList={genresList}
@@ -54,3 +55,5 @@ export default class GenresContainer extends React.PureComponent {
     );
   }
 }
+
+export default GenresContainer;

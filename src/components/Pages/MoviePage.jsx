@@ -1,0 +1,65 @@
+import React from "react";
+import MovieDetail from "../Movies/Tabs/MovieDetail";
+import MovieVideos from "../Movies/Tabs/MovieVideos";
+import MovieCredits from "../Movies/Tabs/MovieCredits";
+import MovieInfo from "../Movies/MovieInfo";
+import MovieTabs from "../Movies/MovieTabs";
+import CallApi from "../../api/api";
+import { Route, Switch } from "react-router-dom";
+import Loader from "react-loader-spinner";
+
+class MoviePage extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      movieInfo: {},
+      isLoading: false
+    };
+  }
+
+  componentDidMount() {
+    this.setState({
+      isLoading: true
+    });
+    CallApi.get(`/movie/${this.props.match.params.id}`, {
+      params: {
+        language: "ru-RU"
+      }
+    }).then(data => {
+      this.setState({
+        movieInfo: data,
+        isLoading: false
+      });
+    });
+  }
+  render() {
+    const { movieInfo, isLoading } = this.state;
+    return (
+      <div className="container-fluid">
+        {isLoading ? (
+          <div className="loader">
+            <Loader type="Puff" color="#00BFFF" height="100" width="100" />
+          </div>
+        ) : (
+          <React.Fragment>
+            <MovieInfo movieInfo={movieInfo} />
+            <MovieTabs movieInfo={movieInfo} />
+            <Switch>
+              <Route
+                exact
+                path="/movie/:id/detail"
+                render={propsRouter => (
+                  <MovieDetail {...propsRouter} movieInfo={movieInfo} />
+                )}
+              />
+              <Route path="/movie/:id/videos" component={MovieVideos} />
+              <Route path="/movie/:id/credits" component={MovieCredits} />
+            </Switch>
+          </React.Fragment>
+        )}
+      </div>
+    );
+  }
+}
+
+export default MoviePage;

@@ -1,19 +1,26 @@
 import React from "react";
-import AppContextHOC from "../HOC/AppContextHOC";
+import { inject, observer } from "mobx-react";
 
-class Pagination extends React.PureComponent {
-
+@inject(({ moviesPageStore }) => ({
+  moviesPageStore
+}))
+@observer
+class Pagination extends React.Component {
   pageDecrement = () => {
-    this.props.onChangePage(this.props.page - 1)
-  }
+    this.props.moviesPageStore.onChangePage(
+      this.props.moviesPageStore.page - 1
+    );
+  };
 
   pageIncrement = () => {
-    console.log("increment")
-    this.props.onChangePage(this.props.page + 1)
-  }
+    console.log("increment");
+    this.props.moviesPageStore.onChangePage(
+      this.props.moviesPageStore.page + 1
+    );
+  };
 
   render() {
-    const { page, total_pages } = this.props;
+    const { page, total_pages } = this.props.moviesPageStore;
     console.log("pagination");
     return (
       <React.Fragment>
@@ -22,7 +29,7 @@ class Pagination extends React.PureComponent {
             type="button"
             className="btn btn-light"
             disabled={page === 1}
-            onClick={this.pageDecrement}  
+            onClick={this.pageDecrement}
           >
             Назад
           </button>
@@ -42,4 +49,4 @@ class Pagination extends React.PureComponent {
   }
 }
 
-export default AppContextHOC(Pagination);
+export default Pagination;
