@@ -20,15 +20,6 @@ export default class GenresContainer extends React.PureComponent {
         genresList: data.genres
       });
     });
-    // fetch(link)
-    //   .then(response => {
-    //     return response.json();
-    //   })
-    //   .then(data => {
-    //     this.setState({
-    //       genresList: data.genres
-    //     });
-    //   });
   }
 
   onChange = event => {

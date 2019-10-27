@@ -1,5 +1,6 @@
 import React from "react";
 import User from "./User";
+import { Link } from "react-router-dom";
 
 const Header = props => {
   const { user, toggleModal } = props;
@@ -8,7 +9,9 @@ const Header = props => {
       <div className="container">
         <ul className="navbar-nav">
           <li className="nav-item active">
-            <a className="nav-link">Home</a>
+            <Link to={"/"} className="nav-link">
+              Home
+            </Link>
           </li>
         </ul>
         {user ? (
